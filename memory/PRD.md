@@ -1,13 +1,15 @@
 # NRWTreff - PRD
 
-## v12 (Current - April 15, 2026)
-- Hero: New photo (pexels lingerie), "Bungee Shade" ghetto font with neon glow
-- Smooth hero-to-sections transition: long gradient fade (100vh)
-- Shared background: manifest photo for all sections below hero
-- Unified fonts: Oswald for headings, Inter for body text throughout
-- Marquee: fixed gaps (gap:0, no padding), seamless scroll
-- Performance card: brighter gears (0.2), brighter speed lines
-- All spacing reviewed and unified
+## v15 (Current - April 15, 2026)
+- Marquee pauses on hover (animation-play-state: paused)
+- React.memo on Header, Footer, FeatureCard components
+- Parallax via requestAnimationFrame (no useState re-renders on scroll)
+- will-change: transform on hero background
+- useCallback for search handler
+- Inline styles extracted to CSS classes (less React reconciliation)
+- Semantic HTML (section, nav, aria-label)
+- Unified font stack: Oswald headings, Inter body
+- All previous features maintained
 
 ## Backlog
 - P1: File upload backend, Email notifications, Profile/Category/City pages

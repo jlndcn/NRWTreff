@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Search, X, MapPin, ChevronDown } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
@@ -12,7 +12,7 @@ const SUB_NAV = [
 
 const NRW_CITIES = ['Köln','Düsseldorf','Dortmund','Essen','Duisburg','Bochum','Wuppertal','Bielefeld','Bonn','Münster'];
 
-const Header = ({ cities = [], regions = [] }) => {
+const Header = memo(({ cities = [], regions = [] }) => {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -178,6 +178,7 @@ const Header = ({ cities = [], regions = [] }) => {
       `}</style>
     </>
   );
-};
+});
 
+Header.displayName = 'Header';
 export default Header;
