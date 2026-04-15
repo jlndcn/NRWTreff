@@ -75,7 +75,7 @@ export default function ComicHomePage() {
           backgroundSize: 'cover', backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed',
         }} />
-        <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.78)' }} />
+        <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.88)' }} />
 
         {/* ── FEATURES ── */}
         <div className="relative pt-24 sm:pt-32 pb-20 sm:pb-28 z-10" data-testid="features-section">
@@ -166,30 +166,33 @@ export default function ComicHomePage() {
       <Footer />
 
       <style>{`
-        /* ═══ GHETTO NEON SIGN ═══ */
-        .neon-headline { text-align: center; line-height: 0.9; }
+        /* ═══ HEADLINE — Oswald matching site identity ═══ */
+        .neon-headline { text-align: center; line-height: 0.92; }
         .neon-line-1 {
           display: block;
-          font-family: 'Bungee Shade', cursive;
-          font-size: clamp(2.4rem, 7vw, 4.5rem);
+          font-family: 'Oswald', sans-serif;
+          font-weight: 700;
+          font-size: clamp(3rem, 8vw, 5.5rem);
           color: #fff;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
           text-shadow:
-            0 0 6px #fff,
-            0 0 18px rgba(255,255,255,0.35),
-            0 0 35px rgba(255,255,255,0.1);
-          letter-spacing: 0.03em;
-          margin-bottom: 0.15em;
+            0 0 8px rgba(255,255,255,0.3),
+            0 0 25px rgba(255,255,255,0.1);
+          margin-bottom: 0.1em;
         }
         .neon-line-2 {
           display: block;
-          font-family: 'Bungee Shade', cursive;
-          font-size: clamp(3.2rem, 10vw, 6.5rem);
-          color: #ff1a1a;
+          font-family: 'Oswald', sans-serif;
+          font-weight: 700;
+          font-size: clamp(4rem, 11vw, 7.5rem);
+          color: #dc1414;
+          text-transform: uppercase;
+          letter-spacing: 0.02em;
           text-shadow:
-            0 0 6px #ff1a1a,
-            0 0 18px rgba(255,26,26,0.45),
-            0 0 40px rgba(255,26,26,0.25),
-            0 0 70px rgba(255,26,26,0.12);
+            0 0 8px rgba(220,20,20,0.4),
+            0 0 25px rgba(220,20,20,0.25),
+            0 0 50px rgba(220,20,20,0.12);
           animation: neon-flicker 5s ease-in-out infinite;
         }
         @keyframes neon-flicker {
