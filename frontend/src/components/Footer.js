@@ -18,8 +18,8 @@ const Footer = () => {
         <div className="marquee-track" style={{ fontFamily: 'Oswald, sans-serif' }}>
           <div className="marquee-content">
             {[...Array(5)].map((_, i) => (
-              <span key={`m1-${i}`} className="text-[8rem] sm:text-[10rem] lg:text-[13rem] font-black tracking-tighter leading-[0.85] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>
-                NRWTREFF<span style={{ WebkitTextStroke: '2px rgba(220,20,20,0.35)', color: 'rgba(220,20,20,0.08)' }}>ROTZLICHT</span>
+              <span key={`m1-${i}`} className="text-[8rem] sm:text-[10rem] lg:text-[13rem] font-black tracking-tighter leading-[0.85] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.06)', WebkitTextStroke: '2px rgba(220,20,20,0.4)' }}>
+                NRWTREFF<span style={{ WebkitTextStroke: '2px rgba(220,20,20,0.55)', color: 'rgba(220,20,20,0.12)' }}>ROTZLICHT</span>
               </span>
             ))}
           </div>
@@ -110,6 +110,10 @@ const Footer = () => {
           display: flex;
           width: max-content;
           animation: marquee-scroll 80s linear infinite;
+        }
+        .marquee-content {
+          display: flex;
+          flex-shrink: 0;
         }
 
         /* Instagram button */

@@ -98,11 +98,11 @@ const Header = ({ cities = [], regions = [] }) => {
 
               {/* CENTER */}
               <Link to="/" data-testid="site-header-logo-link" className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center group">
-                <div className="text-[28px] sm:text-[36px] font-black tracking-[0.02em] leading-none" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                <div className="text-[30px] sm:text-[40px] font-black tracking-[0.02em] leading-none" style={{ fontFamily: 'Oswald, sans-serif' }}>
                   <span style={{ color: '#f0f0f0' }}>NRW</span>
                   <span className="transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(220,20,20,0.5)]" style={{ color: '#dc1414' }}>TREFF</span>
                 </div>
-                <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] mt-0.5" style={{ color: 'rgba(220,20,20,0.6)' }}>ROTZLICHT</div>
+                <div className="text-[11px] sm:text-[12px] font-bold tracking-[0.25em] mt-0.5" style={{ color: 'rgba(220,20,20,0.6)' }}>ROTZLICHT</div>
               </Link>
 
               {/* RIGHT */}
@@ -181,3 +181,4 @@ const Header = ({ cities = [], regions = [] }) => {
 };
 
 export default Header;
+er;
