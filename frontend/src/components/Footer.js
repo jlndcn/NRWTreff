@@ -1,76 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Separator } from './ui/separator';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 3000);
+    }
+  };
+
   return (
-    <footer className="border-t border-white/10 mt-16" style={{ background: '#0a0a0a' }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Brand + Social Media */}
+    <footer className="border-t border-white/10" style={{ background: '#080808' }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+
+        {/* Large Brand Mark */}
+        <div className="mb-10">
+          <div className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none" style={{ fontFamily: 'Oswald, sans-serif' }}>
+            <span style={{ color: '#f0f0f0' }}>NRW</span><span style={{ color: '#cc0000' }}>TREFF</span>
+          </div>
+          <div className="text-xs sm:text-sm font-medium tracking-widest mt-1" style={{ color: '#555' }}>
+            ROTZLICHT
+          </div>
+        </div>
+
+        {/* Footer Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+
+          {/* Column 1: Category Links */}
           <div>
-            <div className="text-xl font-black mb-3" style={{ fontFamily: 'Oswald, sans-serif' }}>
-              <span style={{ color: '#f0f0f0' }}>NRW</span><span style={{ color: '#cc0000' }}>TREFF</span>
-            </div>
-            <div className="text-[10px] font-medium tracking-wider mb-4" style={{ color: '#666' }}>ROTZLICHT</div>
-
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-3 mb-5">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" data-testid="footer-social-instagram"
-                className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:text-white hover:border-white/40 transition-all">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                </svg>
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" data-testid="footer-social-twitter"
-                className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:text-white hover:border-white/40 transition-all">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </a>
-            </div>
-
-            {/* External Links */}
-            <div className="space-y-1.5">
-              <a href="https://boyclubs.de" target="_blank" rel="noopener noreferrer" className="block text-sm text-white/40 hover:text-white/70 transition-colors">
-                Boy Clubs
-              </a>
-              <a href="https://poppen.de" target="_blank" rel="noopener noreferrer" className="block text-sm text-white/40 hover:text-white/70 transition-colors">
-                Poppen.de
-              </a>
+            <div className="space-y-2">
+              <Link to="/kategorien/girls" data-testid="footer-link-girls" className="block text-sm text-white/50 hover:text-white transition-colors">
+                Girls
+              </Link>
+              <Link to="/kategorien/fkk-clubs" data-testid="footer-link-fkk" className="block text-sm text-white/50 hover:text-white transition-colors">
+                FKK Clubs
+              </Link>
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Column 2: Newsletter */}
           <div>
-            <div className="text-sm font-semibold text-white/60 uppercase tracking-widest mb-3">Navigation</div>
-            <div className="space-y-2">
-              <Link to="/" className="block text-sm text-white/50 hover:text-white transition-colors">Startseite</Link>
-              <Link to="/browse" className="block text-sm text-white/50 hover:text-white transition-colors">Alle Profile</Link>
-              <Link to="/kontakt" className="block text-sm text-white/50 hover:text-white transition-colors">Kontakt</Link>
-              <Link to="/bewerben" className="block text-sm text-white/50 hover:text-white transition-colors">Bewerben</Link>
-            </div>
+            <div className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Newsletter</div>
+            <form onSubmit={handleNewsletterSubmit} data-testid="newsletter-form" className="flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                data-testid="newsletter-email-input"
+                className="flex-1 px-3 py-2 rounded text-sm border border-white/15 bg-white/5 text-white/80 placeholder-white/30 focus:outline-none focus:border-red-500/40 transition-colors"
+              />
+              <button
+                type="submit"
+                data-testid="newsletter-submit-btn"
+                className="px-4 py-2 rounded text-sm font-semibold transition-all hover:brightness-110"
+                style={{ background: '#cc0000', color: '#fff' }}
+              >
+                {subscribed ? 'OK' : 'Go'}
+              </button>
+            </form>
+            {subscribed && (
+              <div className="text-xs text-green-400 mt-2">Angemeldet!</div>
+            )}
           </div>
 
-          {/* Legal - Impressum, AGB, Datenschutz */}
+          {/* Column 3: Social */}
           <div>
-            <div className="text-sm font-semibold text-white/60 uppercase tracking-widest mb-3">Rechtliches</div>
+            <div className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Social</div>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="footer-instagram-link"
+              className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+              Instagram
+            </a>
+          </div>
+
+          {/* Column 4: Legal */}
+          <div>
+            <div className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Rechtliches</div>
             <div className="space-y-2">
-              <Link to="/impressum" className="block text-sm text-white/50 hover:text-white transition-colors">Impressum</Link>
-              <Link to="/agb" className="block text-sm text-white/50 hover:text-white transition-colors">AGB</Link>
-              <Link to="/datenschutz" className="block text-sm text-white/50 hover:text-white transition-colors">Datenschutz</Link>
+              <Link to="/agb" data-testid="footer-link-agb" className="block text-sm text-white/50 hover:text-white transition-colors">AGB</Link>
+              <Link to="/datenschutz" data-testid="footer-link-datenschutz" className="block text-sm text-white/50 hover:text-white transition-colors">Datenschutz</Link>
+              <Link to="/impressum" data-testid="footer-link-impressum" className="block text-sm text-white/50 hover:text-white transition-colors">Impressum</Link>
             </div>
           </div>
         </div>
 
-        <Separator className="bg-white/10 mb-6" />
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
-          <span>&copy; {new Date().getFullYear()} NRW Treff. Alle Rechte vorbehalten.</span>
-          <div className="text-center">
-            <div className="text-white/40">Keine Gewährleistung für Inhalt der Profile.</div>
-            <div className="mt-1">Diese Seite enthält Inhalte für Erwachsene (18+).</div>
+        {/* Bottom Disclaimer */}
+        <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="text-xs text-white/30">
+            &copy; {new Date().getFullYear()} NRW Treff. Alle Rechte vorbehalten.
+          </div>
+          <div data-testid="footer-disclaimer" className="text-xs font-medium" style={{ color: '#cc0000aa' }}>
+            Keine Gewährleistung für Fakes.
           </div>
         </div>
       </div>

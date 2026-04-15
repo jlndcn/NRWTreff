@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Menu, MapPin } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 
-const CATEGORIES = [
+const SUB_NAV = [
   { name: 'Girls', slug: 'girls' },
-  { name: 'FKK Saunas', slug: 'fkk-saunas' },
-  { name: 'FKK & Modelle', slug: 'fkk-modelle' },
-  { name: 'Events', slug: 'events' },
-  { name: 'Cam', slug: 'cam' },
+  { name: 'FKK Clubs', slug: 'fkk-clubs' },
+  { name: 'Rotzlicht.com', href: '/' },
 ];
 
 const Header = ({ cities = [], regions = [] }) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-40" style={{ background: 'rgba(10,10,10,0.96)', backdropFilter: 'blur(12px)' }}>
@@ -21,7 +18,7 @@ const Header = ({ cities = [], regions = [] }) => {
       <div className="border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" data-testid="site-header-logo-link" className="flex items-baseline gap-2.5 group">
+          <Link to="/" data-testid="site-header-logo-link" className="flex items-baseline gap-2 group">
             <div className="text-2xl sm:text-3xl font-black tracking-tight leading-none" style={{ fontFamily: 'Oswald, sans-serif' }}>
               <span style={{ color: '#f0f0f0' }}>NRW</span><span style={{ color: '#cc0000' }}>TREFF</span>
             </div>
@@ -30,24 +27,27 @@ const Header = ({ cities = [], regions = [] }) => {
             </div>
           </Link>
 
-          {/* Desktop Nav - Right side */}
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-3">
             <Link
               to="/browse?filter=cities"
               data-testid="nav-staedte-btn"
-              className="px-5 py-1.5 rounded-full text-sm font-semibold border transition-all hover:bg-white/5"
+              className="px-4 py-1.5 rounded text-sm font-semibold border transition-all hover:bg-white/5"
               style={{ borderColor: 'rgba(255,255,255,0.25)', color: '#e0e0e0' }}
             >
               Städte
             </Link>
             <Link
-              to="/kategorien/bordell"
-              data-testid="nav-bordell-btn"
-              className="px-5 py-1.5 rounded-full text-sm font-semibold border transition-all hover:bg-white/5"
+              to="/kontakt"
+              data-testid="nav-kontakt-btn"
+              className="px-4 py-1.5 rounded text-sm font-semibold border transition-all hover:bg-white/5"
               style={{ borderColor: 'rgba(255,255,255,0.25)', color: '#e0e0e0' }}
             >
-              Bordell
+              Kontakt
             </Link>
+            <div className="px-2.5 py-1 rounded text-xs font-bold border" style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#999' }}>
+              18+
+            </div>
           </nav>
 
           {/* Mobile Menu */}
@@ -65,11 +65,16 @@ const Header = ({ cities = [], regions = [] }) => {
               </SheetHeader>
               <div className="mt-6 space-y-1">
                 <Link to="/" onClick={() => setOpen(false)} className="block px-3 py-2 rounded text-white/80 hover:text-white hover:bg-white/5 transition-colors">Startseite</Link>
-                
+
                 <div className="px-3 py-2 text-xs text-white/40 uppercase tracking-widest font-medium mt-4">Kategorien</div>
-                {CATEGORIES.map(cat => (
-                  <Link key={cat.slug} to={`/kategorien/${cat.slug}`} onClick={() => setOpen(false)} className="block px-3 py-1.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-                    {cat.name}
+                {SUB_NAV.map(item => (
+                  <Link
+                    key={item.name}
+                    to={item.href || `/kategorien/${item.slug}`}
+                    onClick={() => setOpen(false)}
+                    className="block px-3 py-1.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    {item.name}
                   </Link>
                 ))}
 
@@ -80,8 +85,8 @@ const Header = ({ cities = [], regions = [] }) => {
                   </Link>
                 ))}
 
-                <div className="border-t border-white/10 mt-4 pt-4">
-                  <Link to="/kategorien/bordell" onClick={() => setOpen(false)} className="block w-full text-center py-2.5 rounded-md font-medium transition-colors" style={{ background: '#cc0000', color: '#fff' }}>Bordell</Link>
+                <div className="border-t border-white/10 mt-4 pt-4 space-y-2">
+                  <Link to="/kontakt" onClick={() => setOpen(false)} className="block w-full text-center py-2.5 rounded-md font-medium transition-colors" style={{ background: '#cc0000', color: '#fff' }}>Kontakt</Link>
                 </div>
               </div>
             </SheetContent>
@@ -89,21 +94,21 @@ const Header = ({ cities = [], regions = [] }) => {
         </div>
       </div>
 
-      {/* Category Sub-Navigation */}
+      {/* Sub-Navigation: Girls · FKK Clubs · Rotzlicht.com */}
       <div className="border-b border-white/8" style={{ background: 'rgba(15,15,15,0.95)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2" style={{ WebkitOverflowScrolling: 'touch' }}>
-            {CATEGORIES.map((cat, i) => (
-              <React.Fragment key={cat.slug}>
+            {SUB_NAV.map((item, i) => (
+              <React.Fragment key={item.name}>
                 <Link
-                  to={`/kategorien/${cat.slug}`}
-                  data-testid={`nav-category-${cat.slug}`}
+                  to={item.href || `/kategorien/${item.slug}`}
+                  data-testid={`nav-sub-${item.name.toLowerCase().replace(/[\s.]/g, '-')}`}
                   className="whitespace-nowrap px-3 py-1 rounded text-xs sm:text-sm font-medium transition-colors hover:text-white hover:bg-white/5"
                   style={{ color: '#999' }}
                 >
-                  {cat.name}
+                  {item.name}
                 </Link>
-                {i < CATEGORIES.length - 1 && (
+                {i < SUB_NAV.length - 1 && (
                   <span className="text-white/20 text-xs select-none">·</span>
                 )}
               </React.Fragment>
