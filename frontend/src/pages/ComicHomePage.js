@@ -9,7 +9,7 @@ import api from '../utils/api';
 
 const B = process.env.REACT_APP_BACKEND_URL;
 
-// Auto-activate card animation when scrolled into view (mobile swipe)
+// IntersectionObserver hook for auto-triggering animations
 function useInView(ref) {
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -19,6 +19,70 @@ function useInView(ref) {
     return () => obs.disconnect();
   }, [ref]);
   return inView;
+}
+
+// Swipe indicator dots for mobile carousel
+const SwipeDots = memo(({ target, count }) => {
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const el = document.querySelector(`[data-testid="${target}"]`);
+    if (!el) return;
+    const onScroll = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = el;
+      const ratio = scrollLeft / (scrollWidth - clientWidth || 1);
+      setActive(Math.round(ratio * (count - 1)));
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [target, count]);
+  return (
+    <div className="swipe-dots">
+      {Array.from({ length: count }, (_, i) => (
+        <div key={i} className={`swipe-dot ${i === active ? 'swipe-dot-active' : ''}`} />
+      ))}
+    </div>
+  );
+});
+SwipeDots.displayName = 'SwipeDots';
+
+// Pull-to-refresh
+function usePullToRefresh() {
+  const [pulling, setPulling] = useState(false);
+  const [pullY, setPullY] = useState(0);
+  const startY = useRef(0);
+  const active = useRef(false);
+
+  useEffect(() => {
+    const onTouchStart = (e) => {
+      if (window.scrollY === 0) {
+        startY.current = e.touches[0].clientY;
+        active.current = true;
+      }
+    };
+    const onTouchMove = (e) => {
+      if (!active.current) return;
+      const diff = e.touches[0].clientY - startY.current;
+      if (diff > 0 && diff < 120) {
+        setPullY(diff);
+        setPulling(true);
+      }
+    };
+    const onTouchEnd = () => {
+      if (pullY > 70) window.location.reload();
+      setPullY(0);
+      setPulling(false);
+      active.current = false;
+    };
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd);
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
+  });
+  return { pulling, pullY };
 }
 
 const DiskretCard = memo(() => {
@@ -74,6 +138,7 @@ export default function ComicHomePage() {
   const [q, setQ] = useState('');
   const heroRef = useRef(null);
   const rafRef = useRef(null);
+  const { pulling, pullY } = usePullToRefresh();
 
   useEffect(() => {
     api.get('/cities').then(r => setCities(r.data)).catch(() => {});
@@ -98,6 +163,12 @@ export default function ComicHomePage() {
 
   return (
     <div className="page-root">
+      {/* Pull-to-refresh indicator */}
+      <div className="ptr-indicator" style={{ transform: `translateY(${pulling ? Math.min(pullY * 0.6, 60) : -60}px)`, opacity: pulling ? Math.min(pullY / 70, 1) : 0 }}>
+        <div className="ptr-spinner" style={{ transform: `rotate(${pullY * 3}deg)` }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc1414" strokeWidth="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        </div>
+      </div>
       <SEOHead title="NRW Treff – Diskrete Kontakte in NRW" description="Finde diskrete Kontakte in deiner Stadt." />
       <AgeVerificationModal />
       <Header cities={cities} />
@@ -127,11 +198,14 @@ export default function ComicHomePage() {
         <div className="below-hero-overlay" />
 
         <section className="features-section" data-testid="features-section">
-          <div className="features-grid">
+          {/* Mobile: horizontal swipe carousel / Desktop: grid */}
+          <div className="features-swipe" data-testid="features-swipe">
             <DiskretCard />
             <PerfCard />
             <VerifCard />
           </div>
+          {/* Swipe indicator dots (mobile only) */}
+          <SwipeDots target="features-swipe" count={3} />
         </section>
 
         <section className="manifest-section">
