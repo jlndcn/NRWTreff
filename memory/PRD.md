@@ -1,12 +1,14 @@
 # NRWTreff - PRD
 
-## v11 (Current - April 15, 2026)
-- Hero: "Permanent Marker" handwritten neon font with white/red glow + flicker
-- Performance card: brighter gear pattern (0.18 opacity, 1.8 stroke), brighter speed lines (rgba 255,60,60,0.5, 3px thick)
-- Shared background: manifest-bg-opt.jpg covers ALL sections below hero (features + manifest), parallax fixed, rgba(0,0,0,0.7) overlay
-- Cards have backdrop-filter blur(8px) with rgba(0,0,0,0.5) for glass effect
-- Manifest section flows seamlessly in same background
+## v12 (Current - April 15, 2026)
+- Hero: New photo (pexels lingerie), "Bungee Shade" ghetto font with neon glow
+- Smooth hero-to-sections transition: long gradient fade (100vh)
+- Shared background: manifest photo for all sections below hero
+- Unified fonts: Oswald for headings, Inter for body text throughout
+- Marquee: fixed gaps (gap:0, no padding), seamless scroll
+- Performance card: brighter gears (0.2), brighter speed lines
+- All spacing reviewed and unified
 
 ## Backlog
-- P1: File upload backend, Email notifications, Category/City/Profile pages
+- P1: File upload backend, Email notifications, Profile/Category/City pages
 - P2: Admin dashboard, Legal pages
