@@ -1,60 +1,48 @@
 # NRWTreff - PRD (Product Requirements Document)
 
 ## Original Problem Statement
-User wants to build NRWTreff - a German adult directory/escort platform for Nordrhein-Westfalen (NRW). The site was loaded from GitHub repo `jlndcn/NRWTreff`.
+NRWTreff - German adult directory/escort platform for NRW. Loaded from GitHub repo `jlndcn/NRWTreff`.
 
 ## Architecture
-- **Frontend**: React (CRA with Craco) + Tailwind CSS + Radix UI components
-- **Backend**: FastAPI + MongoDB (Motor async driver)
-- **Auth**: JWT-based admin authentication with bcrypt
-- **Images**: Static file serving via FastAPI uploads directory
-
-## User Personas
-- **Visitor**: Searches for profiles by city/category, browses listings
-- **Admin**: Manages profiles, cities, categories, applications via admin dashboard
-
-## Core Requirements
-- Age verification modal (18+)
-- City-based profile search
-- Profile cards with contact info
-- Admin dashboard for content management
-- SEO-optimized pages (react-helmet-async)
+- **Frontend**: React (CRA + Craco) + Tailwind CSS + Radix UI
+- **Backend**: FastAPI + MongoDB (Motor async)
+- **Auth**: JWT-based admin auth with bcrypt
 
 ## What's Been Implemented (April 15, 2026)
 
 ### Session 1 - Repository Setup
-- Loaded codebase from GitHub (jlndcn/NRWTreff)
-- Fixed missing dependencies (react-helmet-async, python-slugify)
-- Fixed frontend start script (start-ssr.sh → craco start)
+- Loaded codebase from GitHub, fixed dependencies
 
-### Session 2 - First Design Update (Wireframe 1)
-- Updated Header: Städte/Bordell buttons + sub-nav categories
-- Updated "NRWTreff weil..." section: 3 cards (Verifiziert, Anonym, Einfach)
-- Updated Footer: Social media, Boy Clubs, Poppen.de links, legal links
+### Session 2 - First Design (Wireframe 1)
+- Header with Städte/Bordell, sub-nav categories
+- "NRWTreff weil..." section with 3 cards
 
-### Session 3 - Complete Landing Page Redesign (Wireframe 2)
-- **Header**: NRWTreff Rotzlicht + Städte/Kontakt/18+ buttons + sub-nav (Girls, FKK Clubs, Rotzlicht.com)
-- **Hero**: "Wo bist du, Süßer?" + pill-shaped search bar (Stadt eingeben/Suche) + 3 feature tags (Diskret, Performance, Verifiziert)
-- **Footer**: Large NRWTreff branding, Girls/FKK Clubs links, Newsletter email form, Instagram, AGB+Datenschutz+Impressum, "Keine Gewährleistung für Fakes" disclaimer
+### Session 3 - Landing Page Redesign (Wireframe 2)
+- Simplified layout: Städte/Kontakt/18+ + search + Diskret/Performance/Verifiziert tags
+
+### Session 4 - Everlane-Style Header Redesign (Current)
+- **Complete redesign** to match Everlane.com header structure
+- **Color scheme**: Dark (#0a0a0a) + Neon Cyan (#00e5ff) + minimal Pink (#ff2d7b)
+- **Header**: Top bar (Left: STÄDTE, KONTAKT, 18+ | Center: NRWTREFF + ROTZLICHT | Right: SUCHE)
+- **Sub-nav**: Centered (GIRLS · FKK CLUBS · ROTZLICHT.COM with pink accent)
+- **Search overlay**: Slides down from header with input + close button
+- **Hero**: "Wo bist du, Süßer?" in cyan + pill search bar + feature tags
+- **Footer**: Large NRWTREFF branding, Newsletter form, Instagram, AGB/Datenschutz/Impressum, "Keine Gewährleistung für Fakes"
+- **Mobile**: Hamburger menu + search icon
 - All tests passed (100%)
 
 ## Prioritized Backlog
-### P0 (Critical)
-- None currently
-
-### P1 (Important)
-- Profile detail pages refinement
+### P1
+- Category pages for Girls, FKK Clubs
 - City pages content
-- Category filtering (Girls, FKK Clubs etc.)
+- Profile detail pages
 
-### P2 (Nice to have)
-- Newsletter backend integration (currently frontend-only)
-- Real Instagram link
-- SEO schema markup refinement
-- Mobile UX polish
+### P2
+- Newsletter backend API
+- Legal pages content (AGB, Datenschutz, Impressum)
+- Search autocomplete with city suggestions
 
 ## Next Tasks
-- User to review landing page and provide feedback
-- Implement actual Newsletter API endpoint
-- Category pages for Girls, FKK Clubs
-- Content pages for AGB, Datenschutz, Impressum
+- Review landing page design
+- Category/city page improvements
+- Content for legal pages
