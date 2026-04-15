@@ -1,48 +1,30 @@
-# NRWTreff - PRD (Product Requirements Document)
-
-## Original Problem Statement
-NRWTreff - German adult directory/escort platform for NRW. Loaded from GitHub repo `jlndcn/NRWTreff`.
+# NRWTreff - PRD
 
 ## Architecture
-- **Frontend**: React (CRA + Craco) + Tailwind CSS + Radix UI
-- **Backend**: FastAPI + MongoDB (Motor async)
-- **Auth**: JWT-based admin auth with bcrypt
+- Frontend: React (CRA+Craco) + Tailwind + Radix UI
+- Backend: FastAPI + MongoDB
+- Auth: JWT admin auth + bcrypt
 
-## What's Been Implemented (April 15, 2026)
+## Implementation History
 
-### Session 1 - Repository Setup
-- Loaded codebase from GitHub, fixed dependencies
+### v1-v3: Initial setup + wireframe layouts
+### v4: Everlane-style header (cyan+pink)
+### v5: Dark nightlife redesign (red neon)
+- Rajdhani technical font for headline
+- Interactive feature cards (blur/gears/green)
+- Scrolling marquee footer
+- Instagram gradient hover
 
-### Session 2 - First Design (Wireframe 1)
-- Header with Städte/Bordell, sub-nav categories
-- "NRWTreff weil..." section with 3 cards
+### v6 (Current - April 15, 2026):
+- **Hero**: New nightlife photo background (purple/pink tones)
+- **Header**: More transparent (0.45 opacity), ROTZLICHT more visible (0.6), sub-nav larger (13px) and more readable (0.55 white)
+- **Feature cards**: 30% bigger (p-10/p-14), larger icons (30px), larger titles (3xl)
+- **Performance card**: 5 gears (was 2) at various sizes/positions
+- **Verifiziert card**: Stronger green shimmer (0.3 border, 0.1 shadow, 0.05 inset)
+- **Sub-nav**: ROTZLICHT-CAM (hyphenated)
 
-### Session 3 - Landing Page Redesign (Wireframe 2)
-- Simplified layout: Städte/Kontakt/18+ + search + Diskret/Performance/Verifiziert tags
-
-### Session 4 - Everlane-Style Header Redesign (Current)
-- **Complete redesign** to match Everlane.com header structure
-- **Color scheme**: Dark (#0a0a0a) + Neon Cyan (#00e5ff) + minimal Pink (#ff2d7b)
-- **Header**: Top bar (Left: STÄDTE, KONTAKT, 18+ | Center: NRWTREFF + ROTZLICHT | Right: SUCHE)
-- **Sub-nav**: Centered (GIRLS · FKK CLUBS · ROTZLICHT.COM with pink accent)
-- **Search overlay**: Slides down from header with input + close button
-- **Hero**: "Wo bist du, Süßer?" in cyan + pill search bar + feature tags
-- **Footer**: Large NRWTREFF branding, Newsletter form, Instagram, AGB/Datenschutz/Impressum, "Keine Gewährleistung für Fakes"
-- **Mobile**: Hamburger menu + search icon
-- All tests passed (100%)
-
-## Prioritized Backlog
+## Backlog
 ### P1
-- Category pages for Girls, FKK Clubs
-- City pages content
-- Profile detail pages
-
+- Category pages, City pages, Profile pages
 ### P2
-- Newsletter backend API
-- Legal pages content (AGB, Datenschutz, Impressum)
-- Search autocomplete with city suggestions
-
-## Next Tasks
-- Review landing page design
-- Category/city page improvements
-- Content for legal pages
+- Newsletter backend, Legal pages content, Search autocomplete
