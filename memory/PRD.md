@@ -1,20 +1,15 @@
 # NRWTreff - PRD
 
-## Architecture
-- Frontend: React (CRA+Craco) + Tailwind + Radix UI
-- Backend: FastAPI + MongoDB
-- Auth: JWT admin auth + bcrypt
-
-## v7 (Current - April 15, 2026)
-- **Header**: Transparent (0.45), Städte dropdown (10 NRW cities + "Mehr"), Kontakt dropdown (Support/Inserieren), nav items turn red on hover
-- **Sub-nav**: GIRLS, FKK CLUBS, BORDELLE, ROTZLICHT-CAM (slightly smaller text)
-- **Hero**: New nightlife photo, higher opacity (0.45), Rajdhani font headline
-- **Feature Cards**: 30% bigger, Performance card has 4 interlocking gears always visible at 100% opacity (rotate on hover), Verifiziert card turns fully green on hover, Diskret card blurred until hover
-- **Footer**: Marquee text 100% opacity, full height, 80s speed (slower), bigger text
-- **Support Page**: Form with email, subject, message + disclaimer about false claims
-- **Inserieren Page**: Full form with Arbeitsname, Nationalität, Alter, Sprachen (12 languages with proficiency levels), Körbchengröße, Gewicht, Größe, Intimrasur, Tattoos, Piercings, Service types, Stadt, Handynummer, Zusatzoptionen, Arbeitszeiten (Mon-Sun), individueller Inseratstext
-- **Backend**: /api/support and /api/inserieren endpoints saving to MongoDB
+## v8 (Current - April 15, 2026)
+- **Hero**: Photo 80% opacity, content 30% lower
+- **Header**: Städte dropdown (10 cities + "Mehr"), Kontakt dropdown (Support | Inserieren side-by-side, bigger font), nav turns red on hover, sub-nav whiter text (0.7)
+- **Cards**: Performance filled with SVG gear pattern (rotates on hover), Verifiziert full green gradient on hover, new background photo
+- **Philosophie Section**: New section about company values
+- **Footer Marquee**: Even bigger (13rem), no edges, slower (80s)
+- **Support Page**: Own route /support, hint moved to bottom before submit, dezenter
+- **Inserieren Page**: Own route /inserieren, sections with red category headings (Persönliches/Sprachen/Körpermerkmale/Angebote/Extras), Deutsch/Englisch/Rumänisch first in languages, address field when "Besuchbar" selected, bigger/more readable font throughout
+- **Backend**: /api/support + /api/inserieren endpoints
 
 ## Backlog
-### P1: Category pages, City pages, Profile detail pages
-### P2: Email notifications for support/inserieren, Legal pages content
+- P1: Email notifications, Category/City/Profile pages
+- P2: Admin dashboard for applications, Legal pages

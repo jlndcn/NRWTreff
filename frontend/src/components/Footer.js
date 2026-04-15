@@ -13,20 +13,20 @@ const Footer = () => {
   return (
     <footer style={{ background: '#050505', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
 
-      {/* Scrolling Marquee — full opacity, tall, slow */}
-      <div className="overflow-hidden py-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      {/* Scrolling Marquee — full opacity, massive, slow, no edges */}
+      <div className="overflow-hidden" style={{ background: '#050505' }}>
         <div className="marquee-track" style={{ fontFamily: 'Oswald, sans-serif' }}>
           <div className="marquee-content">
-            {[...Array(6)].map((_, i) => (
-              <span key={`m1-${i}`} className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-black tracking-tighter leading-[1.1] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.2)' }}>
-                NRWTREFF<span style={{ color: 'rgba(220,20,20,0.15)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>ROTZLICHT</span>
+            {[...Array(5)].map((_, i) => (
+              <span key={`m1-${i}`} className="text-[8rem] sm:text-[10rem] lg:text-[13rem] font-black tracking-tighter leading-[0.85] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>
+                NRWTREFF<span style={{ WebkitTextStroke: '2px rgba(220,20,20,0.35)', color: 'rgba(220,20,20,0.08)' }}>ROTZLICHT</span>
               </span>
             ))}
           </div>
           <div className="marquee-content" aria-hidden="true">
-            {[...Array(6)].map((_, i) => (
-              <span key={`m2-${i}`} className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-black tracking-tighter leading-[1.1] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.2)' }}>
-                NRWTREFF<span style={{ color: 'rgba(220,20,20,0.15)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>ROTZLICHT</span>
+            {[...Array(5)].map((_, i) => (
+              <span key={`m2-${i}`} className="text-[8rem] sm:text-[10rem] lg:text-[13rem] font-black tracking-tighter leading-[0.85] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>
+                NRWTREFF<span style={{ WebkitTextStroke: '2px rgba(220,20,20,0.35)', color: 'rgba(220,20,20,0.08)' }}>ROTZLICHT</span>
               </span>
             ))}
           </div>
