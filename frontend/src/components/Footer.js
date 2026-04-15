@@ -13,20 +13,20 @@ const Footer = () => {
   return (
     <footer style={{ background: '#050505', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
 
-      {/* Scrolling Marquee */}
-      <div className="overflow-hidden py-8 sm:py-10" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      {/* Scrolling Marquee — full opacity, tall, slow */}
+      <div className="overflow-hidden py-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
         <div className="marquee-track" style={{ fontFamily: 'Oswald, sans-serif' }}>
           <div className="marquee-content">
-            {[...Array(8)].map((_, i) => (
-              <span key={`m1-${i}`} className="text-[4rem] sm:text-[5.5rem] lg:text-[7rem] font-black tracking-tight leading-none whitespace-nowrap mx-4 select-none" style={{ color: 'rgba(255,255,255,0.03)', WebkitTextStroke: '1px rgba(220,20,20,0.08)' }}>
-                NRWTREFF<span style={{ color: 'rgba(220,20,20,0.06)' }}>ROTZLICHT</span>
+            {[...Array(6)].map((_, i) => (
+              <span key={`m1-${i}`} className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-black tracking-tighter leading-[1.1] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.2)' }}>
+                NRWTREFF<span style={{ color: 'rgba(220,20,20,0.15)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>ROTZLICHT</span>
               </span>
             ))}
           </div>
           <div className="marquee-content" aria-hidden="true">
-            {[...Array(8)].map((_, i) => (
-              <span key={`m2-${i}`} className="text-[4rem] sm:text-[5.5rem] lg:text-[7rem] font-black tracking-tight leading-none whitespace-nowrap mx-4 select-none" style={{ color: 'rgba(255,255,255,0.03)', WebkitTextStroke: '1px rgba(220,20,20,0.08)' }}>
-                NRWTREFF<span style={{ color: 'rgba(220,20,20,0.06)' }}>ROTZLICHT</span>
+            {[...Array(6)].map((_, i) => (
+              <span key={`m2-${i}`} className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-black tracking-tighter leading-[1.1] whitespace-nowrap select-none" style={{ color: 'rgba(255,255,255,0.04)', WebkitTextStroke: '2px rgba(220,20,20,0.2)' }}>
+                NRWTREFF<span style={{ color: 'rgba(220,20,20,0.15)', WebkitTextStroke: '2px rgba(220,20,20,0.25)' }}>ROTZLICHT</span>
               </span>
             ))}
           </div>
@@ -102,19 +102,14 @@ const Footer = () => {
       </div>
 
       <style>{`
-        /* Infinite marquee */
-        .marquee-track {
-          display: flex;
-          width: max-content;
-          animation: marquee-scroll 40s linear infinite;
-        }
-        .marquee-content {
-          display: flex;
-          flex-shrink: 0;
-        }
         @keyframes marquee-scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: marquee-scroll 80s linear infinite;
         }
 
         /* Instagram button */

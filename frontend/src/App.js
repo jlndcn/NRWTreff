@@ -15,6 +15,8 @@ import ApplicationPage from './pages/ApplicationPage';
 import KontaktPage from './pages/KontaktPage';
 import LegalPage from './pages/LegalPage';
 import NotFoundPage from './pages/NotFoundPage';
+import SupportPage from './pages/SupportPage';
+import InserierenPage from './pages/InserierenPage';
 
 // Admin pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -38,6 +40,8 @@ function App() {
           <Route path="/kategorien/:slug" element={<CategoryPage />} />
           <Route path="/bewerben" element={<ApplicationPage />} />
           <Route path="/kontakt" element={<KontaktPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/inserieren" element={<InserierenPage />} />
 
           {/* Legal pages */}
           <Route path="/impressum" element={<LegalPage />} />

@@ -43,9 +43,9 @@ export default function ComicHomePage() {
       <div className="relative overflow-hidden" style={{ minHeight: '90vh', background: '#060606' }}>
         {/* Nightlife Photo Background */}
         <div className="absolute inset-0" style={{
-          backgroundImage: `url(${BACKEND}/api/uploads/hero-new-opt.jpg)`,
+          backgroundImage: `url(${BACKEND}/api/uploads/hero-v7-opt.jpg)`,
           backgroundSize: 'cover', backgroundPosition: 'center 40%',
-          opacity: 0.35, filter: 'brightness(0.55) contrast(1.25) saturate(1.2)',
+          opacity: 0.45, filter: 'brightness(0.6) contrast(1.2) saturate(1.15)',
           transform: `scale(1.06) translateY(${scrollY * 0.1}px)`,
         }} />
         {/* Vignette */}
@@ -104,24 +104,37 @@ export default function ComicHomePage() {
               </div>
             </div>
 
-            {/* PERFORMANCE — gears rotate on hover */}
+            {/* PERFORMANCE — interlocking gears always visible */}
             <div data-testid="feature-card-performance" className="feature-card perf-card group rounded-2xl p-10 sm:p-14 text-center cursor-default relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              {/* Rotating gears background — many gears */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <svg className="gear-svg absolute" width="140" height="140" viewBox="0 0 24 24" fill="none" stroke="rgba(220,20,20,0.1)" strokeWidth="0.5" style={{ top: '5%', right: '0%' }}>
-                  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+              {/* Interlocking gears — 100% opacity, always visible, rotate on hover */}
+              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                {/* Large gear top-right */}
+                <svg className="gear-a absolute" width="180" height="180" viewBox="0 0 100 100" style={{ top: '-15%', right: '-10%' }}>
+                  <g fill="none" stroke="rgba(220,20,20,0.15)" strokeWidth="2">
+                    <circle cx="50" cy="50" r="20"/><circle cx="50" cy="50" r="10"/>
+                    {[0,30,60,90,120,150,180,210,240,270,300,330].map(a => <rect key={a} x="46" y="25" width="8" height="12" rx="2" transform={`rotate(${a} 50 50)`}/>)}
+                  </g>
                 </svg>
-                <svg className="gear-svg-reverse absolute" width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="rgba(220,20,20,0.08)" strokeWidth="0.5" style={{ bottom: '5%', left: '2%' }}>
-                  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+                {/* Medium gear center-left — meshes with large */}
+                <svg className="gear-b absolute" width="130" height="130" viewBox="0 0 100 100" style={{ top: '25%', left: '-5%' }}>
+                  <g fill="none" stroke="rgba(220,20,20,0.12)" strokeWidth="2">
+                    <circle cx="50" cy="50" r="20"/><circle cx="50" cy="50" r="8"/>
+                    {[0,36,72,108,144,180,216,252,288,324].map(a => <rect key={a} x="46" y="25" width="8" height="12" rx="2" transform={`rotate(${a} 50 50)`}/>)}
+                  </g>
                 </svg>
-                <svg className="gear-svg absolute" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(220,20,20,0.07)" strokeWidth="0.6" style={{ top: '55%', left: '15%' }}>
-                  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+                {/* Small gear bottom-right */}
+                <svg className="gear-a absolute" width="90" height="90" viewBox="0 0 100 100" style={{ bottom: '5%', right: '10%' }}>
+                  <g fill="none" stroke="rgba(220,20,20,0.1)" strokeWidth="2.5">
+                    <circle cx="50" cy="50" r="20"/><circle cx="50" cy="50" r="7"/>
+                    {[0,45,90,135,180,225,270,315].map(a => <rect key={a} x="46" y="25" width="8" height="12" rx="2" transform={`rotate(${a} 50 50)`}/>)}
+                  </g>
                 </svg>
-                <svg className="gear-svg-reverse absolute" width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="rgba(220,20,20,0.06)" strokeWidth="0.6" style={{ top: '10%', left: '30%' }}>
-                  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
-                </svg>
-                <svg className="gear-svg absolute" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="rgba(220,20,20,0.05)" strokeWidth="0.7" style={{ bottom: '20%', right: '20%' }}>
-                  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+                {/* Tiny gear bottom-left */}
+                <svg className="gear-b absolute" width="60" height="60" viewBox="0 0 100 100" style={{ bottom: '20%', left: '18%' }}>
+                  <g fill="none" stroke="rgba(220,20,20,0.08)" strokeWidth="3">
+                    <circle cx="50" cy="50" r="22"/><circle cx="50" cy="50" r="8"/>
+                    {[0,60,120,180,240,300].map(a => <rect key={a} x="44" y="22" width="12" height="14" rx="3" transform={`rotate(${a} 50 50)`}/>)}
+                  </g>
                 </svg>
               </div>
               <div className="relative z-10">
@@ -133,13 +146,13 @@ export default function ComicHomePage() {
               </div>
             </div>
 
-            {/* VERIFIZIERT — green shimmer on hover */}
-            <div data-testid="feature-card-verifiziert" className="feature-card verif-card group rounded-2xl p-10 sm:p-14 text-center cursor-default" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div className="w-16 h-16 mx-auto mb-7 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(34,197,94,0.25)]" style={{ background: 'rgba(220,20,20,0.08)', border: '1px solid rgba(220,20,20,0.12)' }}>
-                <ShieldCheck size={30} className="transition-colors duration-500 group-hover:text-green-400" style={{ color: '#dc1414' }} />
+            {/* VERIFIZIERT — whole card turns green on hover */}
+            <div data-testid="feature-card-verifiziert" className="feature-card verif-card group rounded-2xl p-10 sm:p-14 text-center cursor-default transition-all duration-400" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="w-16 h-16 mx-auto mb-7 rounded-xl flex items-center justify-center transition-all duration-400 group-hover:bg-green-500/20 group-hover:border-green-500/30" style={{ background: 'rgba(220,20,20,0.08)', border: '1px solid rgba(220,20,20,0.12)' }}>
+                <ShieldCheck size={30} className="transition-colors duration-400 group-hover:text-green-400" style={{ color: '#dc1414' }} />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight transition-colors duration-500 group-hover:text-green-300" style={{ fontFamily: 'Oswald, sans-serif', color: '#f0f0f0' }}>Verifiziert</h3>
-              <p className="text-[15px] text-white/45 leading-relaxed">Jedes Profil wird manuell geprüft. Echte Menschen, echte Bilder – garantiert.</p>
+              <h3 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight transition-colors duration-400 group-hover:text-green-300" style={{ fontFamily: 'Oswald, sans-serif', color: '#f0f0f0' }}>Verifiziert</h3>
+              <p className="text-[15px] text-white/45 leading-relaxed transition-colors duration-400 group-hover:text-green-200/60">Jedes Profil wird manuell geprüft. Echte Menschen, echte Bilder – garantiert.</p>
             </div>
           </div>
         </div>
@@ -172,29 +185,18 @@ export default function ComicHomePage() {
           filter: blur(0px);
         }
 
-        /* PERFORMANCE — rotating gears */
-        @keyframes gear-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes gear-spin-reverse {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-        .perf-card:hover .gear-svg {
-          animation: gear-spin 6s linear infinite;
-        }
-        .perf-card:hover .gear-svg-reverse {
-          animation: gear-spin-reverse 8s linear infinite;
-        }
+        /* PERFORMANCE — always-visible interlocking gears, spin on hover */
+        @keyframes gear-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes gear-spin-rev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .gear-a { animation: gear-spin 20s linear infinite; }
+        .gear-b { animation: gear-spin-rev 16s linear infinite; }
+        .perf-card:hover .gear-a { animation-duration: 4s; }
+        .perf-card:hover .gear-b { animation-duration: 3s; }
 
-        /* VERIFIZIERT — green shimmer */
-        .verif-card {
-          transition: all 0.5s;
-        }
+        /* VERIFIZIERT — full green on hover */
         .verif-card:hover {
-          border-color: rgba(34,197,94,0.3) !important;
-          box-shadow: 0 0 40px rgba(34,197,94,0.1), 0 0 80px rgba(34,197,94,0.04), inset 0 0 40px rgba(34,197,94,0.05);
+          background: rgba(34,197,94,0.12) !important;
+          border-color: rgba(34,197,94,0.35) !important;
         }
 
         /* All feature cards base hover */

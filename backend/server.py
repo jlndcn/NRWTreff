@@ -1052,3 +1052,55 @@ async def shutdown_scheduler():
     """Shutdown scheduler gracefully"""
     scheduler.shutdown()
     print("🛑 Scheduler stopped")
+
+
+# ─── Support & Inserieren Endpoints ─────────────────────────
+
+class SupportRequest(BaseModel):
+    email: str
+    subject: str
+    message: str
+
+class InserierenRequest(BaseModel):
+    arbeitsname: str
+    nationalitaet: str
+    alter: int
+    sprachen: List[Dict[str, str]]  # [{sprache: "Deutsch", niveau: "Muttersprache"}]
+    koerbchengroesse: str
+    gewicht: str
+    koerpergroesse: str
+    intimrasur: str
+    tattoos: str
+    piercings: List[str]
+    service_typen: List[str]  # Besuchbar, Haus- & Hotelbesuche, Online
+    stadt: str
+    handynummer: str
+    zusatzoptionen: bool = False
+    arbeitszeiten_247: bool = False
+    arbeitszeiten: Optional[Dict[str, str]] = None
+    inserat_text: Optional[str] = None
+    email: str
+
+@app.post("/api/support")
+async def submit_support(req: SupportRequest):
+    doc = {
+        "id": str(uuid.uuid4()),
+        "email": req.email,
+        "subject": req.subject,
+        "message": req.message,
+        "status": "open",
+        "created_at": datetime.now(pytz.UTC).isoformat()
+    }
+    await db.support_requests.insert_one(doc)
+    return {"success": True, "message": "Support-Anfrage eingegangen"}
+
+@app.post("/api/inserieren")
+async def submit_inserieren(req: InserierenRequest):
+    doc = {
+        "id": str(uuid.uuid4()),
+        **req.model_dump(),
+        "status": "pending",
+        "created_at": datetime.now(pytz.UTC).isoformat()
+    }
+    await db.inserieren_requests.insert_one(doc)
+    return {"success": True, "message": "Inserat eingegangen"}

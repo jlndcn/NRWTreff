@@ -5,26 +5,16 @@
 - Backend: FastAPI + MongoDB
 - Auth: JWT admin auth + bcrypt
 
-## Implementation History
-
-### v1-v3: Initial setup + wireframe layouts
-### v4: Everlane-style header (cyan+pink)
-### v5: Dark nightlife redesign (red neon)
-- Rajdhani technical font for headline
-- Interactive feature cards (blur/gears/green)
-- Scrolling marquee footer
-- Instagram gradient hover
-
-### v6 (Current - April 15, 2026):
-- **Hero**: New nightlife photo background (purple/pink tones)
-- **Header**: More transparent (0.45 opacity), ROTZLICHT more visible (0.6), sub-nav larger (13px) and more readable (0.55 white)
-- **Feature cards**: 30% bigger (p-10/p-14), larger icons (30px), larger titles (3xl)
-- **Performance card**: 5 gears (was 2) at various sizes/positions
-- **Verifiziert card**: Stronger green shimmer (0.3 border, 0.1 shadow, 0.05 inset)
-- **Sub-nav**: ROTZLICHT-CAM (hyphenated)
+## v7 (Current - April 15, 2026)
+- **Header**: Transparent (0.45), Städte dropdown (10 NRW cities + "Mehr"), Kontakt dropdown (Support/Inserieren), nav items turn red on hover
+- **Sub-nav**: GIRLS, FKK CLUBS, BORDELLE, ROTZLICHT-CAM (slightly smaller text)
+- **Hero**: New nightlife photo, higher opacity (0.45), Rajdhani font headline
+- **Feature Cards**: 30% bigger, Performance card has 4 interlocking gears always visible at 100% opacity (rotate on hover), Verifiziert card turns fully green on hover, Diskret card blurred until hover
+- **Footer**: Marquee text 100% opacity, full height, 80s speed (slower), bigger text
+- **Support Page**: Form with email, subject, message + disclaimer about false claims
+- **Inserieren Page**: Full form with Arbeitsname, Nationalität, Alter, Sprachen (12 languages with proficiency levels), Körbchengröße, Gewicht, Größe, Intimrasur, Tattoos, Piercings, Service types, Stadt, Handynummer, Zusatzoptionen, Arbeitszeiten (Mon-Sun), individueller Inseratstext
+- **Backend**: /api/support and /api/inserieren endpoints saving to MongoDB
 
 ## Backlog
-### P1
-- Category pages, City pages, Profile pages
-### P2
-- Newsletter backend, Legal pages content, Search autocomplete
+### P1: Category pages, City pages, Profile detail pages
+### P2: Email notifications for support/inserieren, Legal pages content
