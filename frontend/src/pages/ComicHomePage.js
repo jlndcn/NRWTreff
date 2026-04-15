@@ -133,75 +133,67 @@ export default function ComicHomePage() {
         </div>
       </div>
 
-      {/* Features Section mit Stacheldraht-Muster */}
+      {/* NRWTreff weil... Section */}
       <div className="relative py-16 sm:py-20" style={{ background: '#0d0d0d' }}>
-        {/* Stacheldraht-Zaun-Muster im Hintergrund - Kreuzweise/Diagonal */}
-        <div className="absolute inset-0 opacity-15 pointer-events-none">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="barbed-wire" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                {/* Diagonal wire lines - Von links-oben nach rechts-unten */}
-                <line x1="0" y1="0" x2="100" y2="100" stroke="#666" strokeWidth="1.5" />
-                <line x1="-50" y1="50" x2="50" y2="150" stroke="#666" strokeWidth="1.5" />
-                <line x1="50" y1="-50" x2="150" y2="50" stroke="#666" strokeWidth="1.5" />
-                
-                {/* Diagonal wire lines - Von rechts-oben nach links-unten (Kreuzung) */}
-                <line x1="100" y1="0" x2="0" y2="100" stroke="#666" strokeWidth="1.5" />
-                <line x1="150" y1="50" x2="50" y2="150" stroke="#666" strokeWidth="1.5" />
-                <line x1="50" y1="-50" x2="-50" y2="50" stroke="#666" strokeWidth="1.5" />
-                
-                {/* Barbed wire spikes entlang Diagonale 1 */}
-                <path d="M22,19 L20,22 L22,25 M26,19 L22,22 L26,25" stroke="#777" strokeWidth="1" fill="none" />
-                <path d="M47,44 L45,47 L47,50 M51,44 L47,47 L51,50" stroke="#777" strokeWidth="1" fill="none" />
-                <path d="M72,69 L70,72 L72,75 M76,69 L72,72 L76,75" stroke="#777" strokeWidth="1" fill="none" />
-                
-                {/* Barbed wire spikes entlang Diagonale 2 */}
-                <path d="M78,19 L75,22 L78,25 M82,19 L78,22 L82,25" stroke="#777" strokeWidth="1" fill="none" />
-                <path d="M53,44 L50,47 L53,50 M57,44 L53,47 L57,50" stroke="#777" strokeWidth="1" fill="none" />
-                <path d="M28,69 L25,72 L28,75 M32,69 L28,72 L32,75" stroke="#777" strokeWidth="1" fill="none" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#barbed-wire)" />
-          </svg>
-        </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-14">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5" style={{ fontFamily: 'Oswald, sans-serif', color: '#f0f0f0' }}>
-              Warum <span style={{ color: '#cc0000' }}>NRW Treff?</span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold" style={{ fontFamily: 'Oswald, sans-serif', color: '#f0f0f0' }}>
+              NRW<span style={{ color: '#cc0000' }}>Treff</span> weil...
             </h2>
-            <p className="text-white/50 text-base sm:text-lg max-w-2xl mx-auto">
-              Schnell, diskret und unkompliziert – so funktioniert's
-            </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { icon: '🏙️', title: 'NRW-weit', desc: 'Alle wichtigen Städte in Nordrhein-Westfalen' },
-              { icon: '🔒', title: 'Diskret', desc: 'Deine Privatsphäre hat höchste Priorität' },
-              { icon: '⚡', title: 'Direkt', desc: 'Sofortkontakt per Telefon oder WhatsApp' },
-              { icon: '✨', title: 'Geprüft', desc: 'Alle Profile sind moderiert' },
-              { icon: '📱', title: 'Mobile-First', desc: 'Optimiert für unterwegs' },
-              { icon: '🆓', title: 'Kostenlos', desc: 'Keine versteckten Kosten' }
+              {
+                title: 'Verifiziert',
+                desc: 'Alle Profile werden von uns geprüft und bestätigt.',
+                icon: (
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cc0000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
+                  </svg>
+                )
+              },
+              {
+                title: 'Anonym',
+                desc: 'Deine Privatsphäre hat höchste Priorität. Immer diskret.',
+                icon: (
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cc0000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                )
+              },
+              {
+                title: 'Einfach',
+                desc: 'Stadt wählen, Profil finden, direkt Kontakt aufnehmen.',
+                icon: (
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cc0000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                )
+              }
             ].map((feature, i) => (
               <div
                 key={i}
-                className="p-6 sm:p-7 rounded-xl border border-white/10 transition-all hover:border-red-500/30 hover:scale-105"
+                data-testid={`feature-card-${feature.title.toLowerCase()}`}
+                className="relative p-8 sm:p-10 rounded-2xl border border-white/10 text-center transition-all hover:border-red-500/20 group"
                 style={{ background: 'rgba(255, 255, 255, 0.02)' }}
               >
-                <div className="text-4xl sm:text-5xl mb-4">{feature.icon}</div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2" style={{ color: '#f0f0f0' }}>
+                <div className="mb-5 flex justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold mb-3" style={{ fontFamily: 'Oswald, sans-serif', color: '#f0f0f0' }}>
                   {feature.title}
                 </h3>
-                <p className="text-sm sm:text-base text-white/50">{feature.desc}</p>
+                <p className="text-sm sm:text-base text-white/50 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
 
-          {/* CTA Button - Scroll to Search */}
+          {/* CTA Button */}
           <div className="text-center mt-12 sm:mt-14">
             <button
               onClick={scrollToSearch}
-              className="inline-flex items-center gap-3 px-7 sm:px-8 py-4 sm:py-4.5 rounded-xl font-bold text-lg sm:text-xl transition-all hover:scale-105 shadow-2xl"
+              className="inline-flex items-center gap-3 px-7 sm:px-8 py-4 rounded-xl font-bold text-lg sm:text-xl transition-all hover:scale-105 shadow-2xl"
               style={{ background: '#cc0000', color: '#fff' }}
             >
               Jetzt Stadt auswählen <ArrowUp size={20} />
