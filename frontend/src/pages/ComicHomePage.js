@@ -41,7 +41,7 @@ export default function ComicHomePage() {
       {/* ══════ HERO ══════ */}
       <div className="relative overflow-hidden" style={{ minHeight: '100vh', background: '#050505' }}>
         <div className="absolute inset-0" style={{
-          backgroundImage: `url(${B}/api/uploads/hero-v12-opt.jpg)`,
+          backgroundImage: `url(${B}/api/uploads/hero-v13-opt.jpg)`,
           backgroundSize: 'cover', backgroundPosition: 'center 30%',
           transform: `scale(1.03) translateY(${scrollY * 0.06}px)`,
         }} />
@@ -75,7 +75,7 @@ export default function ComicHomePage() {
           backgroundSize: 'cover', backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed',
         }} />
-        <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.72)' }} />
+        <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.78)' }} />
 
         {/* ── FEATURES ── */}
         <div className="relative pt-24 sm:pt-32 pb-20 sm:pb-28 z-10" data-testid="features-section">
