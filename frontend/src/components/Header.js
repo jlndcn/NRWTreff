@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useRef, useEffect, memo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, Search, X, MapPin, ChevronDown } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import { Menu, Search, X, MapPin, ChevronDown, ChevronRight } from 'lucide-react';
 
 const SUB_NAV = [
   { name: 'GIRLS', slug: 'girls' },
@@ -12,12 +11,13 @@ const SUB_NAV = [
 
 const NRW_CITIES = ['Köln','Düsseldorf','Dortmund','Essen','Duisburg','Bochum','Wuppertal','Bielefeld','Bonn','Münster'];
 
-const Header = memo(({ cities = [], regions = [] }) => {
-  const [open, setOpen] = useState(false);
+const Header = memo(({ cities = [] }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [staedteOpen, setStaedteOpen] = useState(false);
   const [kontaktOpen, setKontaktOpen] = useState(false);
+  const [mobileStaedte, setMobileStaedte] = useState(false);
   const navigate = useNavigate();
   const staedteRef = useRef(null);
   const kontaktRef = useRef(null);
@@ -31,131 +31,100 @@ const Header = memo(({ cities = [], regions = [] }) => {
     return () => document.removeEventListener('mousedown', h);
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      const city = cities.find(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (city) navigate(`/stadte/${city.slug}`);
-      else navigate(`/browse?search=${searchQuery}`);
-      setSearchOpen(false); setSearchQuery('');
-    }
-  };
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
 
-  const handleCityClick = (name) => {
+  const handleSearch = useCallback((e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    const city = cities.find(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    navigate(city ? `/stadte/${city.slug}` : `/browse?search=${searchQuery}`);
+    setSearchOpen(false); setSearchQuery(''); setMobileOpen(false);
+  }, [searchQuery, cities, navigate]);
+
+  const goCity = useCallback((name) => {
     const slug = name.toLowerCase().replace(/ü/g,'ue').replace(/ö/g,'oe').replace(/ä/g,'ae').replace(/ß/g,'ss').replace(/\s+/g,'-');
-    setStaedteOpen(false); navigate(`/stadte/${slug}`);
-  };
+    setStaedteOpen(false); setMobileOpen(false); navigate(`/stadte/${slug}`);
+  }, [navigate]);
+
+  const close = useCallback(() => setMobileOpen(false), []);
 
   return (
     <>
-      <header className="sticky top-0 z-40" style={{ background: 'rgba(6,6,6,0.45)', backdropFilter: 'blur(20px) saturate(140%)' }}>
-        <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="max-w-7xl mx-auto px-5 sm:px-8">
-            <div className="h-16 sm:h-[72px] flex items-center justify-between relative">
-
-              {/* LEFT */}
-              <nav className="hidden lg:flex items-center gap-8">
-                <div ref={staedteRef} className="relative">
-                  <button onClick={() => { setStaedteOpen(!staedteOpen); setKontaktOpen(false); }} data-testid="nav-staedte"
-                    className="nav-link-hover text-[15px] font-semibold tracking-[0.06em] uppercase flex items-center gap-1.5">
-                    Städte <ChevronDown size={14} className={`transition-transform duration-200 ${staedteOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {staedteOpen && (
-                    <div className="absolute top-full left-0 mt-3 w-56 rounded-xl overflow-hidden shadow-2xl" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      {NRW_CITIES.map(city => (
-                        <button key={city} onClick={() => handleCityClick(city)}
-                          className="w-full text-left px-5 py-3 text-[14px] font-medium text-white/60 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2.5">
-                          <MapPin size={13} className="opacity-40" />{city}
-                        </button>
-                      ))}
-                      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                        <button onClick={() => { setStaedteOpen(false); setSearchOpen(true); }}
-                          className="w-full text-left px-5 py-3.5 text-[13px] font-bold tracking-wide uppercase" style={{ color: '#dc1414' }}>
-                          Mehr Städte...
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* KONTAKT — side by side dropdown */}
-                <div ref={kontaktRef} className="relative">
-                  <button onClick={() => { setKontaktOpen(!kontaktOpen); setStaedteOpen(false); }} data-testid="nav-kontakt"
-                    className="nav-link-hover text-[15px] font-semibold tracking-[0.06em] uppercase flex items-center gap-1.5">
-                    Kontakt <ChevronDown size={14} className={`transition-transform duration-200 ${kontaktOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {kontaktOpen && (
-                    <div className="absolute top-full left-0 mt-3 rounded-xl overflow-hidden shadow-2xl flex" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <Link to="/support" onClick={() => setKontaktOpen(false)}
-                        className="px-7 py-4 text-[15px] font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors whitespace-nowrap">Support</Link>
-                      <div style={{ width: '1px', background: 'rgba(255,255,255,0.08)' }} />
-                      <Link to="/inserieren" onClick={() => setKontaktOpen(false)}
-                        className="px-7 py-4 text-[15px] font-semibold whitespace-nowrap transition-colors hover:bg-red-500/5" style={{ color: '#dc1414' }}>Inserieren</Link>
-                    </div>
-                  )}
-                </div>
-              </nav>
-
-              {/* CENTER */}
-              <Link to="/" data-testid="site-header-logo-link" className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center group">
-                <div className="text-[30px] sm:text-[40px] font-black tracking-[0.02em] leading-none" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                  <span style={{ color: '#f0f0f0' }}>NRW</span>
-                  <span className="transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(220,20,20,0.5)]" style={{ color: '#dc1414' }}>TREFF</span>
-                </div>
-                <div className="text-[11px] sm:text-[12px] font-bold tracking-[0.25em] mt-0.5" style={{ color: 'rgba(220,20,20,0.6)' }}>ROTZLICHT</div>
-              </Link>
-
-              {/* RIGHT */}
-              <div className="hidden lg:flex items-center gap-7">
-                <button onClick={() => setSearchOpen(!searchOpen)} data-testid="nav-search-toggle"
-                  className="nav-link-hover text-[15px] font-semibold tracking-[0.06em] uppercase flex items-center gap-2">
-                  <Search size={16} /> Suche
+      <header className="hdr">
+        {/* Main bar */}
+        <div className="hdr-main">
+          <div className="hdr-inner">
+            {/* Desktop left nav */}
+            <nav className="hdr-desk-nav">
+              <div ref={staedteRef} className="relative">
+                <button onClick={() => { setStaedteOpen(!staedteOpen); setKontaktOpen(false); }} data-testid="nav-staedte" className="hdr-link">
+                  Städte <ChevronDown size={14} className={`transition-transform duration-200 ${staedteOpen ? 'rotate-180' : ''}`} />
                 </button>
-                <span className="text-[12px] font-bold tracking-[0.1em] px-3 py-1.5 rounded" style={{ color: 'rgba(220,20,20,0.6)', border: '1px solid rgba(220,20,20,0.2)', background: 'rgba(220,20,20,0.06)' }}>18+</span>
-              </div>
-
-              {/* MOBILE */}
-              <div className="lg:hidden flex items-center gap-4">
-                <button onClick={() => setSearchOpen(!searchOpen)} className="text-white/60 hover:text-white"><Search size={20} /></button>
-                <Sheet open={open} onOpenChange={setOpen}>
-                  <SheetTrigger asChild><button data-testid="site-header-menu-button" className="text-white/60 hover:text-white"><Menu size={22} /></button></SheetTrigger>
-                  <SheetContent side="right" className="border-l w-72 p-0" style={{ background: '#0a0a0a', borderColor: 'rgba(220,20,20,0.08)' }}>
-                    <SheetHeader className="px-5 pt-6 pb-4"><SheetTitle style={{ fontFamily: 'Oswald, sans-serif', fontSize: '24px' }}><span style={{ color: '#f0f0f0' }}>NRW</span><span style={{ color: '#dc1414' }}>TREFF</span></SheetTitle></SheetHeader>
-                    <div className="px-4 space-y-0.5">
-                      <Link to="/" onClick={() => setOpen(false)} className="mobile-nav-link">Startseite</Link>
-                      <Link to="/support" onClick={() => setOpen(false)} className="mobile-nav-link">Support</Link>
-                      <Link to="/inserieren" onClick={() => setOpen(false)} className="mobile-nav-link" style={{ color: '#dc1414' }}>Inserieren</Link>
-                      <div className="pt-3 mt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                        {SUB_NAV.map(item => (
-                          <Link key={item.name} to={`/kategorien/${item.slug}`} onClick={() => setOpen(false)} className="mobile-nav-link" style={item.accent ? { color: 'rgba(220,20,20,0.7)' } : {}}>{item.name}</Link>
-                        ))}
-                      </div>
+                {staedteOpen && (
+                  <div className="hdr-dropdown w-56">
+                    {NRW_CITIES.map(city => (
+                      <button key={city} onClick={() => goCity(city)} className="hdr-dd-item"><MapPin size={13} className="opacity-40" />{city}</button>
+                    ))}
+                    <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                      <button onClick={() => { setStaedteOpen(false); setSearchOpen(true); }} className="hdr-dd-more">Mehr Städte...</button>
                     </div>
-                  </SheetContent>
-                </Sheet>
+                  </div>
+                )}
               </div>
+              <div ref={kontaktRef} className="relative">
+                <button onClick={() => { setKontaktOpen(!kontaktOpen); setStaedteOpen(false); }} data-testid="nav-kontakt" className="hdr-link">
+                  Kontakt <ChevronDown size={14} className={`transition-transform duration-200 ${kontaktOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {kontaktOpen && (
+                  <div className="hdr-dropdown flex">
+                    <Link to="/support" onClick={() => setKontaktOpen(false)} className="hdr-dd-side">Support</Link>
+                    <div style={{ width: 1, background: 'rgba(255,255,255,0.08)' }} />
+                    <Link to="/inserieren" onClick={() => setKontaktOpen(false)} className="hdr-dd-side hdr-dd-accent">Inserieren</Link>
+                  </div>
+                )}
+              </div>
+            </nav>
+
+            {/* Center brand */}
+            <Link to="/" data-testid="site-header-logo-link" className="hdr-brand group">
+              <div className="hdr-brand-name"><span className="text-white/95">NRW</span><span className="hdr-brand-red group-hover:drop-shadow-[0_0_12px_rgba(220,20,20,0.5)]">TREFF</span></div>
+              <div className="hdr-brand-sub">ROTZLICHT</div>
+            </Link>
+
+            {/* Desktop right */}
+            <div className="hdr-desk-right">
+              <button onClick={() => setSearchOpen(!searchOpen)} data-testid="nav-search-toggle" className="hdr-link"><Search size={16} /> Suche</button>
+              <span className="hdr-age">18+</span>
+            </div>
+
+            {/* Mobile right — search + hamburger */}
+            <div className="hdr-mob-right">
+              <button onClick={() => setSearchOpen(!searchOpen)} className="hdr-mob-btn" aria-label="Suche"><Search size={20} /></button>
+              <button onClick={() => setMobileOpen(!mobileOpen)} data-testid="site-header-menu-button" className="hdr-mob-btn" aria-label="Menü"><Menu size={22} /></button>
             </div>
           </div>
         </div>
 
-        {/* SUB-NAV — whiter text */}
-        <div style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(4,4,4,0.5)' }}>
+        {/* Desktop sub-nav — hidden on mobile */}
+        <div className="hdr-subnav">
           <div className="max-w-7xl mx-auto px-5 sm:px-8">
-            <div className="flex items-center justify-center gap-6 sm:gap-8 lg:gap-10 py-2.5 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center justify-center gap-6 sm:gap-8 lg:gap-10 py-2.5">
               {SUB_NAV.map(item => (
                 <Link key={item.name} to={`/kategorien/${item.slug}`} data-testid={`subnav-${item.slug}`}
-                  className="subnav-link whitespace-nowrap text-[11px] sm:text-[12px] font-semibold tracking-[0.14em] uppercase"
-                  style={{ color: item.accent ? 'rgba(220,20,20,0.8)' : 'rgba(255,255,255,0.7)' }}>
-                  {item.name}
-                </Link>
+                  className={`subnav-link ${item.accent ? 'subnav-accent' : ''}`}>{item.name}</Link>
               ))}
             </div>
           </div>
         </div>
 
+        {/* Search overlay */}
         {searchOpen && (
-          <div className="absolute left-0 right-0 z-50" style={{ top: '100%', background: 'rgba(8,8,8,0.98)', borderBottom: '1px solid rgba(220,20,20,0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8)' }}>
-            <div className="max-w-2xl mx-auto px-6 py-5">
+          <div className="hdr-search-overlay">
+            <div className="max-w-2xl mx-auto px-5 py-4">
               <form onSubmit={handleSearch} className="flex items-center gap-3">
                 <Search size={16} style={{ color: 'rgba(220,20,20,0.5)' }} />
                 <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Stadt eingeben..." autoFocus data-testid="header-search-input"
@@ -166,15 +135,106 @@ const Header = memo(({ cities = [], regions = [] }) => {
           </div>
         )}
       </header>
+
+      {/* Search backdrop */}
       {searchOpen && <div className="fixed inset-0 z-30 bg-black/60" onClick={() => { setSearchOpen(false); setSearchQuery(''); }} />}
 
+      {/* ═══ MOBILE FULLSCREEN MENU ═══ */}
+      {mobileOpen && (
+        <div className="mob-menu" onClick={(e) => e.target === e.currentTarget && close()}>
+          <div className="mob-menu-panel">
+            {/* Close */}
+            <div className="flex items-center justify-between px-5 pt-5 pb-3">
+              <div className="text-xl font-black" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                <span className="text-white/90">NRW</span><span style={{ color: '#dc1414' }}>TREFF</span>
+              </div>
+              <button onClick={close} className="text-white/40 hover:text-white p-1"><X size={22} /></button>
+            </div>
+
+            <div className="mob-menu-body">
+              {/* Kategorien */}
+              <div className="mob-section-label">Kategorien</div>
+              {SUB_NAV.map(item => (
+                <Link key={item.name} to={`/kategorien/${item.slug}`} onClick={close} className={`mob-link ${item.accent ? 'mob-link-accent' : ''}`}>
+                  {item.name} <ChevronRight size={14} className="opacity-30" />
+                </Link>
+              ))}
+
+              {/* Städte */}
+              <div className="mob-section-label mt-5">
+                <button onClick={() => setMobileStaedte(!mobileStaedte)} className="flex items-center gap-2 w-full">
+                  Städte <ChevronDown size={12} className={`transition-transform ${mobileStaedte ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+              {mobileStaedte && NRW_CITIES.map(city => (
+                <button key={city} onClick={() => goCity(city)} className="mob-link"><MapPin size={13} className="opacity-30" /> {city}</button>
+              ))}
+
+              {/* Kontakt */}
+              <div className="mob-section-label mt-5">Kontakt</div>
+              <Link to="/support" onClick={close} className="mob-link">Support <ChevronRight size={14} className="opacity-30" /></Link>
+              <Link to="/inserieren" onClick={close} className="mob-link mob-link-accent">Inserieren <ChevronRight size={14} className="opacity-30" /></Link>
+            </div>
+
+            <div className="mob-menu-footer">
+              <span className="hdr-age">18+</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style>{`
-        .nav-link-hover { color: rgba(255,255,255,0.6); transition: color 0.3s; }
-        .nav-link-hover:hover { color: #dc1414; }
-        .subnav-link { transition: color 0.3s; }
-        .subnav-link:hover { color: #dc1414 !important; }
-        .mobile-nav-link { display:block; padding:10px 8px; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color:rgba(255,255,255,0.5); transition:color 0.15s,background 0.15s; border-radius:4px; }
-        .mobile-nav-link:hover { color:#f0f0f0; background:rgba(255,20,20,0.06); }
+        .hdr { position: sticky; top: 0; z-index: 40; background: rgba(6,6,6,0.45); backdrop-filter: blur(20px) saturate(140%); }
+        .hdr-main { border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .hdr-inner { max-width: 80rem; margin: 0 auto; padding: 0 1.25rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        @media (min-width: 640px) { .hdr-inner { padding: 0 2rem; height: 72px; } }
+
+        .hdr-desk-nav { display: none; align-items: center; gap: 2rem; }
+        .hdr-desk-right { display: none; align-items: center; gap: 1.75rem; }
+        @media (min-width: 1024px) { .hdr-desk-nav, .hdr-desk-right { display: flex; } .hdr-mob-right { display: none !important; } }
+
+        .hdr-mob-right { display: flex; align-items: center; gap: 0.75rem; }
+        .hdr-mob-btn { color: rgba(255,255,255,0.55); padding: 6px; transition: color 0.2s; }
+        .hdr-mob-btn:hover { color: #fff; }
+
+        .hdr-link { font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 6px; transition: color 0.3s; cursor: pointer; background: none; border: none; font-family: Inter, sans-serif; }
+        .hdr-link:hover { color: #dc1414; }
+
+        .hdr-brand { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; text-decoration: none; }
+        .hdr-brand-name { font-family: Oswald, sans-serif; font-size: 26px; font-weight: 900; letter-spacing: 0.02em; line-height: 1; }
+        @media (min-width: 640px) { .hdr-brand-name { font-size: 36px; } }
+        .hdr-brand-red { color: #dc1414; transition: all 0.3s; }
+        .hdr-brand-sub { font-size: 10px; font-weight: 700; letter-spacing: 0.25em; margin-top: 2px; color: rgba(220,20,20,0.6); }
+        @media (min-width: 640px) { .hdr-brand-sub { font-size: 11px; } }
+
+        .hdr-age { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 4px; color: rgba(220,20,20,0.6); border: 1px solid rgba(220,20,20,0.2); background: rgba(220,20,20,0.06); }
+
+        .hdr-subnav { border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(4,4,4,0.5); display: none; }
+        @media (min-width: 1024px) { .hdr-subnav { display: block; } }
+        .subnav-link { white-space: nowrap; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); transition: color 0.3s; text-decoration: none; }
+        .subnav-link:hover { color: #dc1414; }
+        .subnav-accent { color: rgba(220,20,20,0.8); }
+
+        .hdr-dropdown { position: absolute; top: 100%; left: 0; margin-top: 12px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); background: #111; border: 1px solid rgba(255,255,255,0.1); z-index: 50; }
+        .hdr-dd-item { width: 100%; text-align: left; padding: 12px 20px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 10px; transition: all 0.15s; background: none; border: none; cursor: pointer; font-family: Inter, sans-serif; }
+        .hdr-dd-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .hdr-dd-more { width: 100%; text-align: left; padding: 14px 20px; font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #dc1414; background: none; border: none; cursor: pointer; }
+        .hdr-dd-side { padding: 16px 28px; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.7); transition: all 0.15s; white-space: nowrap; text-decoration: none; }
+        .hdr-dd-side:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .hdr-dd-accent { color: #dc1414; }
+
+        .hdr-search-overlay { position: absolute; left: 0; right: 0; top: 100%; z-index: 50; background: rgba(8,8,8,0.98); border-bottom: 1px solid rgba(220,20,20,0.1); box-shadow: 0 24px 48px rgba(0,0,0,0.8); }
+
+        /* Mobile fullscreen menu */
+        .mob-menu { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.7); }
+        .mob-menu-panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(300px, 85vw); background: #0a0a0a; border-left: 1px solid rgba(220,20,20,0.08); display: flex; flex-direction: column; animation: slideIn 0.2s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .mob-menu-body { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; -webkit-overflow-scrolling: touch; }
+        .mob-menu-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: center; }
+        .mob-section-label { padding: 8px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(220,20,20,0.4); }
+        .mob-link { display: flex; align-items: center; justify-content: space-between; padding: 12px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); border-radius: 6px; transition: all 0.15s; text-decoration: none; width: 100%; background: none; border: none; cursor: pointer; font-family: Inter, sans-serif; }
+        .mob-link:hover, .mob-link:active { color: #fff; background: rgba(255,255,255,0.04); }
+        .mob-link-accent { color: rgba(220,20,20,0.75); }
       `}</style>
     </>
   );
