@@ -181,4 +181,3 @@ const Header = ({ cities = [], regions = [] }) => {
 };
 
 export default Header;
-er;

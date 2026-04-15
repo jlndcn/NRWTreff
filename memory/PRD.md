@@ -1,15 +1,16 @@
 # NRWTreff - PRD
 
-## v8 (Current - April 15, 2026)
-- **Hero**: Photo 80% opacity, content 30% lower
-- **Header**: Städte dropdown (10 cities + "Mehr"), Kontakt dropdown (Support | Inserieren side-by-side, bigger font), nav turns red on hover, sub-nav whiter text (0.7)
-- **Cards**: Performance filled with SVG gear pattern (rotates on hover), Verifiziert full green gradient on hover, new background photo
-- **Philosophie Section**: New section about company values
-- **Footer Marquee**: Even bigger (13rem), no edges, slower (80s)
-- **Support Page**: Own route /support, hint moved to bottom before submit, dezenter
-- **Inserieren Page**: Own route /inserieren, sections with red category headings (Persönliches/Sprachen/Körpermerkmale/Angebote/Extras), Deutsch/Englisch/Rumänisch first in languages, address field when "Besuchbar" selected, bigger/more readable font throughout
-- **Backend**: /api/support + /api/inserieren endpoints
+## v9 (Current - April 15, 2026)
+- Hero photo ORIGINAL (no darkening/filter), Playfair Display italic font
+- Header 10% bigger (80px height, 40px logo), sub-nav whiter (0.7)
+- Performance card: SVG gear pattern fill + speed-dash lines animation on hover
+- Verifiziert card: knalliges Grün (#16a34a) fills entire card on hover, white text
+- Philosophie section: "Ehrlich/Direkt/Sicher" 3-column layout with ambient glow
+- Footer marquee: brighter (0.4 stroke, 0.55 ROTZLICHT), 13rem text
+- Support page: hint dezent before submit button
+- Inserieren page: Foto/Video upload, dropdown for Sprachen + Piercings, warm amber (#c47030) category headers, Besuchbar -> address field, Service (Wichtig) dropdown with 14 options, Service (Optional) dropdown with 10 options, Deutsch/Englisch/Rumänisch first
+- Fixed: removed stray "er;" from Header.js, replaced HelmetProvider with simple SEOHead
 
 ## Backlog
-- P1: Email notifications, Category/City/Profile pages
-- P2: Admin dashboard for applications, Legal pages
+- P1: Email notifications, Category/City/Profile pages, actual file upload backend
+- P2: Admin dashboard, Legal pages content
