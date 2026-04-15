@@ -1,53 +1,64 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import React from 'react';
+import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { Toaster } from './components/ui/sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Public pages
+import ComicHomePage from './pages/ComicHomePage';
+import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import CityPage from './pages/CityPage';
+import RegionPage from './pages/RegionPage';
+import CategoryPage from './pages/CategoryPage';
+import ApplicationPage from './pages/ApplicationPage';
+import KontaktPage from './pages/KontaktPage';
+import LegalPage from './pages/LegalPage';
+import NotFoundPage from './pages/NotFoundPage';
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+// Admin pages
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProfiles from './pages/admin/AdminProfiles';
+import AdminProfileEdit from './pages/admin/AdminProfileEdit';
+import AdminApplications from './pages/admin/AdminApplications';
+import AdminCities from './pages/admin/AdminCities';
 
 function App() {
   return (
-    <div className="App">
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          {/* Public routes */}
+          <Route path="/" element={<ComicHomePage />} />
+          <Route path="/browse" element={<HomePage />} />
+          <Route path="/profile/:slug" element={<ProfilePage />} />
+          <Route path="/stadte/:slug" element={<CityPage />} />
+          <Route path="/regionen/:slug" element={<RegionPage />} />
+          <Route path="/kategorien/:slug" element={<CategoryPage />} />
+          <Route path="/bewerben" element={<ApplicationPage />} />
+          <Route path="/kontakt" element={<KontaktPage />} />
+
+          {/* Legal pages */}
+          <Route path="/impressum" element={<LegalPage />} />
+          <Route path="/datenschutz" element={<LegalPage />} />
+          <Route path="/agb" element={<LegalPage />} />
+
+          {/* Admin routes */}
+          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/profile" element={<AdminProfiles />} />
+          <Route path="/admin/profile/:id" element={<AdminProfileEdit />} />
+          <Route path="/admin/bewerbungen" element={<AdminApplications />} />
+          <Route path="/admin/staedte" element={<AdminCities />} />
+
+          {/* 404 */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <Toaster richColors theme="dark" position="top-right" />
       </BrowserRouter>
-    </div>
+    </AuthProvider>
   );
 }
 
