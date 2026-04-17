@@ -58,6 +58,11 @@ const Header = memo(({ cities = [] }) => {
         {/* Main bar */}
         <div className="hdr-main">
           <div className="hdr-inner">
+            {/* Mobile left — hamburger (burger) */}
+            <div className="hdr-mob-left">
+              <button onClick={() => setMobileOpen(!mobileOpen)} data-testid="site-header-menu-button" className="hdr-mob-btn" aria-label="Menü"><Menu size={26} /></button>
+            </div>
+
             {/* Desktop left nav */}
             <nav className="hdr-desk-nav">
               <div ref={staedteRef} className="relative">
@@ -101,10 +106,9 @@ const Header = memo(({ cities = [] }) => {
               <span className="hdr-age">18+</span>
             </div>
 
-            {/* Mobile right — search + hamburger */}
+            {/* Mobile right — search only (burger moved to left) */}
             <div className="hdr-mob-right">
-              <button onClick={() => setSearchOpen(!searchOpen)} className="hdr-mob-btn" aria-label="Suche"><Search size={20} /></button>
-              <button onClick={() => setMobileOpen(!mobileOpen)} data-testid="site-header-menu-button" className="hdr-mob-btn" aria-label="Menü"><Menu size={22} /></button>
+              <button onClick={() => setSearchOpen(!searchOpen)} className="hdr-mob-btn" aria-label="Suche"><Search size={26} /></button>
             </div>
           </div>
         </div>
@@ -186,15 +190,17 @@ const Header = memo(({ cities = [] }) => {
       <style>{`
         .hdr { position: sticky; top: 0; z-index: 40; background: rgba(6,6,6,0.45); backdrop-filter: blur(20px) saturate(140%); }
         .hdr-main { border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .hdr-inner { max-width: 80rem; margin: 0 auto; padding: 0 1.25rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: relative; }
-        @media (min-width: 640px) { .hdr-inner { padding: 0 2rem; height: 72px; } }
+        .hdr-inner { max-width: 80rem; margin: 0 auto; padding: 0 1rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        @media (min-width: 640px) { .hdr-inner { padding: 0 1.25rem; height: 56px; } }
+        @media (min-width: 1024px) { .hdr-inner { padding: 0 2rem; height: 72px; } }
 
         .hdr-desk-nav { display: none; align-items: center; gap: 2rem; }
         .hdr-desk-right { display: none; align-items: center; gap: 1.75rem; }
-        @media (min-width: 1024px) { .hdr-desk-nav, .hdr-desk-right { display: flex; } .hdr-mob-right { display: none !important; } }
+        .hdr-mob-left { display: flex; align-items: center; }
+        @media (min-width: 1024px) { .hdr-desk-nav, .hdr-desk-right { display: flex; } .hdr-mob-right, .hdr-mob-left { display: none !important; } }
 
         .hdr-mob-right { display: flex; align-items: center; gap: 0.75rem; }
-        .hdr-mob-btn { color: rgba(255,255,255,0.55); padding: 6px; transition: color 0.2s; }
+        .hdr-mob-btn { color: rgba(255,255,255,0.7); padding: 8px; transition: color 0.2s; display: flex; align-items: center; justify-content: center; }
         .hdr-mob-btn:hover { color: #fff; }
 
         .hdr-link { font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 6px; transition: color 0.3s; cursor: pointer; background: none; border: none; font-family: Inter, sans-serif; }
