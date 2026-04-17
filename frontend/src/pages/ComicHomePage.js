@@ -281,18 +281,18 @@ export default function ComicHomePage() {
           pointer-events: none;
           top: 2%;
           right: 2%;
-          width: 44%;
-          max-width: 220px;
+          width: 57%;
+          max-width: 286px;
           opacity: 0.75;
           transform: rotate(-12deg);
           filter: drop-shadow(0 0 24px rgba(220,20,20,0.55)) drop-shadow(0 0 48px rgba(220,20,20,0.25));
         }
-        @media (min-width: 640px) { .hero-lips { width: 30%; max-width: 320px; top: 0%; right: 8%; opacity: 0.6; } }
-        @media (min-width: 1024px) { .hero-lips { width: 24%; max-width: 340px; top: -2%; right: 5%; opacity: 0.55; } }
+        @media (min-width: 640px) { .hero-lips { width: 39%; max-width: 416px; top: 0%; right: 8%; opacity: 0.6; } }
+        @media (min-width: 1024px) { .hero-lips { width: 31%; max-width: 442px; top: -2%; right: 5%; opacity: 0.55; } }
 
         .neon-line-1 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.2rem, 10vw, 5.5rem); color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1); letter-spacing: 0.04em; margin-bottom: 0.08em; }
         .neon-line-2 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); animation: neon-flicker 5s ease-in-out infinite; }
-        @keyframes neon-flicker { 0%,100% { opacity:1; } 93% { opacity:1; } 94% { opacity:0.82; } 95% { opacity:1; } 97% { opacity:0.9; } 98% { opacity:1; } }
+        @keyframes neon-flicker { 0%,100% { opacity:1; } 86% { opacity:1; } 87% { opacity:0.76; } 88% { opacity:1; } 93% { opacity:1; } 94% { opacity:0.62; } 95% { opacity:1; } 97% { opacity:0.82; } 98% { opacity:1; } }
 
         .hero-search-wrap { max-width: 32rem; margin: 0 auto; }
         .hero-search { position: relative; display: flex; align-items: center; border-radius: 9999px; overflow: hidden; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px); transition: border-color 0.2s, box-shadow 0.25s; }
