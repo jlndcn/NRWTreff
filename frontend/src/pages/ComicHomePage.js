@@ -21,6 +21,39 @@ function useInView(ref) {
   return inView;
 }
 
+// Scroll progress (0..1) of element as it passes through the viewport.
+// 0 when the element top is below viewport bottom; 1 when the element top has scrolled above 20% of viewport.
+function useScrollProgress(ref) {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    let raf = null;
+    const compute = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+      // Start when element top enters viewport (rect.top === vh → p=0)
+      // Full when element top reaches 25% from viewport top (rect.top === vh*0.25 → p=1)
+      const start = vh;
+      const end = vh * 0.25;
+      const raw = (start - rect.top) / (start - end);
+      setP(Math.max(0, Math.min(1, raw)));
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { compute(); raf = null; });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    compute();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+  return p;
+}
+
 // Swipe indicator dots for mobile carousel
 const SwipeDots = memo(({ target, count }) => {
   const [active, setActive] = useState(0);
@@ -87,9 +120,9 @@ function usePullToRefresh() {
 
 const DiskretCard = memo(() => {
   const ref = useRef(null);
-  const vis = useInView(ref);
+  const p = useScrollProgress(ref);
   return (
-    <div ref={ref} data-testid="feature-card-diskret" className={`feature-card diskret-card group ${vis ? 'in-view' : ''}`}>
+    <div ref={ref} data-testid="feature-card-diskret" className="feature-card diskret-card group" style={{ '--p': p }}>
       <div className="diskret-inner">
         <div className="card-icon"><Shield size={26} /></div>
         <h3 className="card-title">Diskret</h3>
@@ -101,10 +134,8 @@ const DiskretCard = memo(() => {
 DiskretCard.displayName = 'DiskretCard';
 
 const PerfCard = memo(() => {
-  const ref = useRef(null);
-  const vis = useInView(ref);
   return (
-    <div ref={ref} data-testid="feature-card-performance" className={`feature-card perf-card group ${vis ? 'in-view' : ''}`}>
+    <div data-testid="feature-card-performance" className="feature-card perf-card group">
       <div className="perf-bg" />
       <div className="perf-lines">
         {[18, 33, 48, 63, 78].map((t, i) => <div key={i} className="speed-line" style={{ top: `${t}%`, animationDelay: `${i * 0.12}s` }} />)}
@@ -121,9 +152,9 @@ PerfCard.displayName = 'PerfCard';
 
 const VerifCard = memo(() => {
   const ref = useRef(null);
-  const vis = useInView(ref);
+  const p = useScrollProgress(ref);
   return (
-    <div ref={ref} data-testid="feature-card-verifiziert" className={`feature-card verif-card group ${vis ? 'in-view' : ''}`}>
+    <div ref={ref} data-testid="feature-card-verifiziert" className="feature-card verif-card group" style={{ '--p': p }}>
       <div className="card-icon verif-icon"><ShieldCheck size={26} /></div>
       <h3 className="card-title verif-title">Verifiziert</h3>
       <p className="card-desc verif-desc">Jedes Profil wird manuell geprüft. Echte Menschen, echte Bilder.</p>
@@ -233,7 +264,7 @@ export default function ComicHomePage() {
         .hero-section { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; background: #050505; }
         .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 30%; will-change: transform; transform: scale(1.03); }
         .hero-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,5,5,0.1) 0%, transparent 20%, transparent 45%, rgba(5,5,5,0.4) 65%, rgba(5,5,5,0.85) 80%, #050505 100%); }
-        .hero-content { position: relative; z-index: 10; max-width: 48rem; margin: 0 auto; padding: 11.5rem 1.25rem 6rem; text-align: center; }
+        .hero-content { position: relative; z-index: 10; max-width: 48rem; margin: 0 auto; padding: 10.8rem 1.25rem 6rem; text-align: center; }
         @media (min-width: 640px) { .hero-content { padding: 16rem 2rem 10rem; } }
 
         .neon-headline { position: relative; margin-bottom: 1.5rem; line-height: 0.88; }
@@ -244,17 +275,16 @@ export default function ComicHomePage() {
           position: absolute;
           z-index: 0;
           pointer-events: none;
-          /* Center on junction of "DU," (end of line 1) and "SÜSSER?" (line 2) */
-          top: 10%;
-          right: 4%;
-          width: 32%;
-          max-width: 170px;
-          opacity: 0.7;
+          top: 2%;
+          right: 2%;
+          width: 44%;
+          max-width: 220px;
+          opacity: 0.75;
           transform: rotate(-12deg);
           filter: drop-shadow(0 0 24px rgba(220,20,20,0.55)) drop-shadow(0 0 48px rgba(220,20,20,0.25));
         }
-        @media (min-width: 640px) { .hero-lips { width: 24%; max-width: 260px; top: 6%; right: 10%; opacity: 0.6; } }
-        @media (min-width: 1024px) { .hero-lips { width: 20%; max-width: 290px; top: 4%; right: 7%; opacity: 0.55; } }
+        @media (min-width: 640px) { .hero-lips { width: 30%; max-width: 320px; top: 0%; right: 8%; opacity: 0.6; } }
+        @media (min-width: 1024px) { .hero-lips { width: 24%; max-width: 340px; top: -2%; right: 5%; opacity: 0.55; } }
 
         .neon-line-1 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.2rem, 10vw, 5.5rem); color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1); letter-spacing: 0.04em; margin-bottom: 0.08em; }
         .neon-line-2 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); animation: neon-flicker 5s ease-in-out infinite; }
@@ -292,8 +322,11 @@ export default function ComicHomePage() {
         /* FEATURES */
         .features-section { position: relative; z-index: 10; padding: 3.5rem 1.25rem; }
         @media (min-width: 640px) { .features-section { padding: 6rem 2rem 5rem; } }
-        .features-grid { max-width: 72rem; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 768px) { .features-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+        /* Cards: uniform spacing, stacked on mobile, 3-col grid on tablet+ */
+        .features-swipe { max-width: 72rem; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+        @media (min-width: 768px) { .features-swipe { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+        /* Hide swipe dots — we now use grid */
+        .swipe-dots { display: none; }
 
         .feature-card { border-radius: 1rem; padding: 2rem; text-align: center; cursor: default; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; position: relative; overflow: hidden; }
         @media (min-width: 640px) { .feature-card { padding: 2.5rem 3rem; border-radius: 1.25rem; } }
@@ -303,56 +336,51 @@ export default function ComicHomePage() {
         @media (min-width: 640px) { .card-icon { width: 56px; height: 56px; margin-bottom: 1.5rem; } }
         .card-title { font-family: Oswald, sans-serif; font-size: 1.25rem; font-weight: 700; color: #f0f0f0; margin-bottom: 0.5rem; }
         @media (min-width: 640px) { .card-title { font-size: 1.5rem; margin-bottom: 0.75rem; } }
-        .card-desc { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.45); font-family: Inter, sans-serif; }
+        .card-desc { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.55); font-family: Inter, sans-serif; }
         @media (min-width: 640px) { .card-desc { font-size: 14px; line-height: 1.7; } }
 
-        /* DISKRET — blur, clear on hover OR in-view (mobile) */
-        .diskret-card .diskret-inner { filter: blur(4px); transition: filter 0.5s; }
-        .diskret-card:hover .diskret-inner, .diskret-card.in-view .diskret-inner { filter: blur(0); }
+        /* DISKRET — scroll-linked: blur decreases as user scrolls past */
+        .diskret-card .diskret-inner { filter: blur(calc((1 - var(--p, 0)) * 4px)); transition: filter 0.15s linear; }
+        .diskret-card:hover .diskret-inner { filter: blur(0); }
 
-        /* PERFORMANCE — gears + speed lines on hover OR in-view */
-        .perf-bg { position: absolute; inset: 0; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='rgba(220,20,20,0.2)' stroke-width='1.8'%3E%3Ccircle cx='50' cy='50' r='16'/%3E%3Ccircle cx='50' cy='50' r='7'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(0 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(45 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(90 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(135 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(180 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(225 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(270 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(315 50 50)'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 60px; }
-        .perf-card:hover .perf-bg, .perf-card.in-view .perf-bg { animation: gear-move 10s linear infinite; }
+        /* PERFORMANCE — always animating (no scroll condition) */
+        .perf-bg { position: absolute; inset: 0; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='rgba(220,20,20,0.2)' stroke-width='1.8'%3E%3Ccircle cx='50' cy='50' r='16'/%3E%3Ccircle cx='50' cy='50' r='7'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(0 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(45 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(90 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(135 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(180 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(225 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(270 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(315 50 50)'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 60px; animation: gear-move 10s linear infinite; }
         @keyframes gear-move { from { background-position: 0 0; } to { background-position: 600px 600px; } }
-        .perf-lines { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
-        .perf-card:hover .perf-lines, .perf-card.in-view .perf-lines { opacity: 1; }
-        .speed-line { position: absolute; left: -20%; height: 3px; width: 45%; background: linear-gradient(90deg, transparent, rgba(255,60,60,0.5), transparent); animation: speed-dash 0.7s ease-out infinite; }
+        .perf-lines { position: absolute; inset: 0; pointer-events: none; opacity: 1; }
+        .speed-line { position: absolute; left: -20%; height: 3px; width: 45%; background: linear-gradient(90deg, transparent, rgba(255,60,60,0.5), transparent); animation: speed-dash 0.9s ease-out infinite; }
         @keyframes speed-dash { 0% { left: -45%; opacity: 0; } 30% { opacity: 1; } 100% { left: 120%; opacity: 0; } }
-        .perf-icon { transition: transform 0.3s; }
-        .perf-card:hover .perf-icon, .perf-card.in-view .perf-icon { transform: scale(1.1); }
+        .perf-icon { animation: perf-pulse 2.4s ease-in-out infinite; }
+        @keyframes perf-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
-        /* VERIFIZIERT — green on hover OR in-view */
-        .verif-card { transition: all 0.5s; }
-        .verif-card::before { content: ''; position: absolute; inset: 0; background: #16a34a; opacity: 0; transition: opacity 0.5s; }
-        .verif-card:hover::before, .verif-card.in-view::before { opacity: 1; }
-        .verif-card:hover, .verif-card.in-view { border-color: #16a34a !important; }
+        /* VERIFIZIERT — scroll-linked: green overlay grows with scroll progress */
+        .verif-card { transition: border-color 0.3s; }
+        .verif-card::before { content: ''; position: absolute; inset: 0; background: #16a34a; opacity: var(--p, 0); transition: opacity 0.15s linear; }
+        .verif-card:hover::before { opacity: 1; }
         .verif-card > * { position: relative; z-index: 1; }
-        .verif-card:hover .verif-icon, .verif-card.in-view .verif-icon { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
-        .verif-card:hover .verif-icon svg, .verif-card.in-view .verif-icon svg { color: #fff; }
-        .verif-card:hover .verif-title, .verif-card.in-view .verif-title { color: #fff; }
-        .verif-card:hover .verif-desc, .verif-card.in-view .verif-desc { color: rgba(255,255,255,0.8); }
-        .verif-icon { transition: all 0.5s; }
-        .verif-title { transition: color 0.5s; }
-        .verif-desc { transition: color 0.5s; }
+        .verif-card[style*="--p:1"], .verif-card:hover { border-color: #16a34a !important; }
+        .verif-icon { transition: all 0.3s; }
+        .verif-title, .verif-desc { transition: color 0.3s; }
+        /* Mix color based on progress using CSS: use drop-shadow trick — simpler: just make text visible on green */
+        .verif-card:hover .verif-icon, .verif-card:hover .verif-title, .verif-card:hover .verif-desc { color: #fff; }
 
         /* MANIFEST */
         .manifest-section { position: relative; z-index: 10; padding: 3rem 1.25rem 4rem; }
         @media (min-width: 640px) { .manifest-section { padding: 5rem 2.5rem 7rem; } }
         .manifest-inner { max-width: 1100px; margin: 0 auto; max-width: 640px; }
         @media (min-width: 1024px) { .manifest-inner { max-width: 1100px; } }
-        .manifest-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(220,20,20,0.65); margin-bottom: 1rem; font-family: Inter, sans-serif; }
-        @media (min-width: 640px) { .manifest-tag { font-size: 11px; margin-bottom: 1.25rem; } }
-        .manifest-heading { font-family: Oswald, sans-serif; font-size: clamp(1.6rem, 5vw, 2.8rem); font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 1.5rem; }
+        .manifest-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(220,20,20,0.95); margin-bottom: 1rem; font-family: Inter, sans-serif; }
+        @media (min-width: 640px) { .manifest-tag { font-size: 12px; margin-bottom: 1.25rem; } }
+        .manifest-heading { font-family: Oswald, sans-serif; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 1.5rem; }
         @media (min-width: 640px) { .manifest-heading { margin-bottom: 2rem; } }
         .manifest-heading span { color: #dc1414; }
-        .manifest-body { font-family: Inter, sans-serif; font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.65); }
-        @media (min-width: 640px) { .manifest-body { font-size: 15px; line-height: 1.85; } }
+        .manifest-body { font-family: Inter, sans-serif; font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.88); }
+        @media (min-width: 640px) { .manifest-body { font-size: 16px; line-height: 1.85; } }
         .manifest-body p { margin-bottom: 1rem; }
         @media (min-width: 640px) { .manifest-body p { margin-bottom: 1.25rem; } }
-        .manifest-body strong { color: rgba(255,255,255,0.9); font-weight: 500; }
-        .manifest-closing { font-size: 12px; color: rgba(255,255,255,0.35); }
-        @media (min-width: 640px) { .manifest-closing { font-size: 13px; } }
-        .manifest-sig { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.07); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; color: rgba(220,20,20,0.5); font-family: Inter, sans-serif; }
+        .manifest-body strong { color: #fff; font-weight: 600; }
+        .manifest-closing { font-size: 13px; color: rgba(255,255,255,0.6); font-style: italic; }
+        @media (min-width: 640px) { .manifest-closing { font-size: 14px; } }
+        .manifest-sig { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: rgba(220,20,20,0.85); font-family: Inter, sans-serif; }
         @media (min-width: 640px) { .manifest-sig { margin-top: 2rem; padding-top: 1.25rem; } }
       `}</style>
     </div>

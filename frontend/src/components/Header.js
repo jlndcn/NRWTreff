@@ -151,7 +151,7 @@ const Header = memo(({ cities = [] }) => {
             {/* Menu header */}
             <div className="mob-menu-header">
               <div className="mob-menu-brand">
-                <span style={{ color: '#dc1414' }}>ROTLICHT</span>
+                <span style={{ color: '#dc1414' }}>ROTZLICHT</span>
               </div>
               <button onClick={close} className="text-white/50 hover:text-white p-1"><X size={22} /></button>
             </div>
@@ -172,7 +172,7 @@ const Header = memo(({ cities = [] }) => {
                 </button>
               </div>
               {mobileStaedte && NRW_CITIES.map(city => (
-                <button key={city} onClick={() => goCity(city)} className="mob-link"><MapPin size={13} className="opacity-30" /> {city}</button>
+                <button key={city} onClick={() => goCity(city)} className="mob-sublink"><span className="flex items-center gap-2"><MapPin size={12} className="opacity-40" />{city}</span></button>
               ))}
 
               {/* Kontakt */}
@@ -182,8 +182,8 @@ const Header = memo(({ cities = [] }) => {
                 </button>
               </div>
               {mobileKontakt && (<>
-                <Link to="/support" onClick={close} className="mob-link">Support <ChevronRight size={14} className="opacity-30" /></Link>
-                <Link to="/inserieren" onClick={close} className="mob-link mob-link-accent">Inserieren <ChevronRight size={14} className="opacity-30" /></Link>
+                <Link to="/support" onClick={close} className="mob-sublink">Support <ChevronRight size={12} className="opacity-40" /></Link>
+                <Link to="/inserieren" onClick={close} className="mob-sublink mob-sublink-accent">Inserieren <ChevronRight size={12} className="opacity-40" /></Link>
               </>)}
             </div>
 
@@ -247,11 +247,16 @@ const Header = memo(({ cities = [] }) => {
         .mob-menu-brand { font-family: Oswald, sans-serif; font-size: 20px; font-weight: 900; letter-spacing: 0.08em; }
         .mob-menu-body { flex: 1; overflow-y: auto; padding: 0.75rem 1rem 1rem; -webkit-overflow-scrolling: touch; }
         .mob-menu-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: center; }
-        .mob-section-label { padding: 10px 12px 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(220,20,20,0.85); }
+        .mob-section-label { padding: 14px 12px 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(220,20,20,0.85); }
         .mob-section-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; padding: 0; }
-        .mob-link { display: flex; align-items: center; justify-content: space-between; padding: 12px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(255,255,255,0.75); border-radius: 6px; transition: all 0.15s; text-decoration: none; width: 100%; background: none; border: none; cursor: pointer; font-family: Inter, sans-serif; }
+        /* Main category items — larger, Oswald font */
+        .mob-link { display: flex; align-items: center; justify-content: space-between; padding: 12px; font-family: Oswald, sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.85); border-radius: 6px; transition: all 0.15s; text-decoration: none; width: 100%; background: none; border: none; cursor: pointer; }
         .mob-link:hover, .mob-link:active { color: #fff; background: rgba(255,255,255,0.04); }
-        .mob-link-accent { color: rgba(220,20,20,0.9); }
+        .mob-link-accent { color: rgba(220,20,20,0.95); }
+        /* Sub-items (cities, support/inserieren) — smaller, Inter font */
+        .mob-sublink { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 10px 20px; font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0.02em; color: rgba(255,255,255,0.62); border-radius: 6px; transition: all 0.15s; text-decoration: none; width: 100%; background: none; border: none; cursor: pointer; }
+        .mob-sublink:hover, .mob-sublink:active { color: #fff; background: rgba(255,255,255,0.04); }
+        .mob-sublink-accent { color: rgba(220,20,20,0.8); }
       `}</style>
     </>
   );
