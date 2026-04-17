@@ -279,7 +279,7 @@ export default function ComicHomePage() {
           position: absolute;
           z-index: 0;
           pointer-events: none;
-          top: 0%;
+          top: 2%;
           right: 2%;
           width: 54%;
           max-width: 272px;
@@ -287,33 +287,11 @@ export default function ComicHomePage() {
           transform: rotate(-12deg);
           filter: drop-shadow(0 0 24px rgba(220,20,20,0.55)) drop-shadow(0 0 48px rgba(220,20,20,0.25));
         }
-        @media (min-width: 640px) { .hero-lips { width: 37%; max-width: 395px; top: -2%; right: 8%; opacity: 0.6; } }
-        @media (min-width: 1024px) { .hero-lips { width: 29%; max-width: 420px; top: -4%; right: 5%; opacity: 0.55; } }
+        @media (min-width: 640px) { .hero-lips { width: 37%; max-width: 395px; top: 0%; right: 8%; opacity: 0.6; } }
+        @media (min-width: 1024px) { .hero-lips { width: 29%; max-width: 420px; top: -2%; right: 5%; opacity: 0.55; } }
 
         .neon-line-1 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.2rem, 10vw, 5.5rem); color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1); letter-spacing: 0.04em; margin-bottom: 0.08em; }
-        .neon-line-2 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); animation: neon-flicker 4.2s ease-in-out infinite; }
-        @keyframes neon-flicker {
-          0%, 100% { opacity: 1; }
-          18% { opacity: 1; }
-          19% { opacity: 0.45; }
-          20% { opacity: 1; }
-          40% { opacity: 1; }
-          41% { opacity: 0.7; }
-          42% { opacity: 1; }
-          42.5% { opacity: 0.55; }
-          43% { opacity: 1; }
-          66% { opacity: 1; }
-          67% { opacity: 0.35; }
-          68% { opacity: 1; }
-          84% { opacity: 1; }
-          85% { opacity: 0.65; }
-          85.5% { opacity: 1; }
-          86% { opacity: 0.25; }
-          86.5% { opacity: 1; }
-          92% { opacity: 1; }
-          93% { opacity: 0.55; }
-          94% { opacity: 1; }
-        }
+        .neon-line-2 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); }
 
         .hero-search-wrap { max-width: 32rem; margin: 0 auto; }
         .hero-search { position: relative; display: flex; align-items: center; border-radius: 9999px; overflow: hidden; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px); transition: border-color 0.2s, box-shadow 0.25s; }
