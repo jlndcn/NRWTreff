@@ -22,7 +22,8 @@ function useInView(ref) {
 }
 
 // Scroll progress (0..1) of element as it passes through the viewport.
-// 0 when the element top is below viewport bottom; 1 when the element top has scrolled above 20% of viewport.
+// Starts LATER (when element top reaches 75% vh) and completes at 35% vh.
+// Reverses automatically when user scrolls back up since rect.top increases.
 function useScrollProgress(ref) {
   const [p, setP] = useState(0);
   useEffect(() => {
@@ -31,12 +32,15 @@ function useScrollProgress(ref) {
       if (!ref.current) return;
       const rect = ref.current.getBoundingClientRect();
       const vh = window.innerHeight || 800;
-      // Start when element top enters viewport (rect.top === vh → p=0)
-      // Full when element top reaches 25% from viewport top (rect.top === vh*0.25 → p=1)
-      const start = vh;
-      const end = vh * 0.25;
+      const start = vh * 0.78;   // begin animation later
+      const end = vh * 0.30;     // fully animated at 30% from top
       const raw = (start - rect.top) / (start - end);
-      setP(Math.max(0, Math.min(1, raw)));
+      // Ease-in-out for more immersive feel
+      let eased = Math.max(0, Math.min(1, raw));
+      eased = eased < 0.5
+        ? 2 * eased * eased
+        : 1 - Math.pow(-2 * eased + 2, 2) / 2;
+      setP(eased);
     };
     const onScroll = () => {
       if (raf) return;
@@ -339,9 +343,18 @@ export default function ComicHomePage() {
         .card-desc { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.55); font-family: Inter, sans-serif; }
         @media (min-width: 640px) { .card-desc { font-size: 14px; line-height: 1.7; } }
 
-        /* DISKRET — scroll-linked: blur decreases as user scrolls past */
-        .diskret-card .diskret-inner { filter: blur(calc((1 - var(--p, 0)) * 4px)); transition: filter 0.15s linear; }
-        .diskret-card:hover .diskret-inner { filter: blur(0); }
+        /* DISKRET — scroll-linked: immersive reveal (blur + opacity + scale + slide) */
+        .diskret-card .diskret-inner {
+          filter: blur(calc((1 - var(--p, 0)) * 10px));
+          opacity: calc(0.25 + var(--p, 0) * 0.75);
+          transform: scale(calc(0.92 + var(--p, 0) * 0.08)) translateY(calc((1 - var(--p, 0)) * 16px));
+          transition: filter 0.25s ease-out, opacity 0.25s ease-out, transform 0.25s ease-out;
+        }
+        .diskret-card {
+          border-color: rgba(255,255,255, calc(0.04 + var(--p, 0) * 0.08));
+          transition: border-color 0.25s ease-out;
+        }
+        .diskret-card:hover .diskret-inner { filter: blur(0); opacity: 1; transform: none; }
 
         /* PERFORMANCE — always animating (no scroll condition) */
         .perf-bg { position: absolute; inset: 0; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='rgba(220,20,20,0.2)' stroke-width='1.8'%3E%3Ccircle cx='50' cy='50' r='16'/%3E%3Ccircle cx='50' cy='50' r='7'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(0 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(45 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(90 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(135 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(180 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(225 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(270 50 50)'/%3E%3Crect x='47' y='28' width='6' height='10' rx='2' transform='rotate(315 50 50)'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 60px; animation: gear-move 10s linear infinite; }
@@ -352,16 +365,39 @@ export default function ComicHomePage() {
         .perf-icon { animation: perf-pulse 2.4s ease-in-out infinite; }
         @keyframes perf-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
-        /* VERIFIZIERT — scroll-linked: green overlay grows with scroll progress */
-        .verif-card { transition: border-color 0.3s; }
-        .verif-card::before { content: ''; position: absolute; inset: 0; background: #16a34a; opacity: var(--p, 0); transition: opacity 0.15s linear; }
-        .verif-card:hover::before { opacity: 1; }
+        /* VERIFIZIERT — scroll-linked: immersive green takeover with glow + scale + icon/text fade */
+        .verif-card {
+          border-color: rgba(22,163,74, calc(0.2 + var(--p, 0) * 0.8)) !important;
+          transform: scale(calc(1 + var(--p, 0) * 0.02));
+          box-shadow: 0 0 calc(var(--p, 0) * 40px) rgba(22,163,74, calc(var(--p, 0) * 0.5)), 0 calc(var(--p, 0) * 10px) calc(var(--p, 0) * 30px) rgba(0,0,0, calc(var(--p, 0) * 0.35));
+          transition: border-color 0.25s ease-out, transform 0.25s ease-out, box-shadow 0.25s ease-out;
+        }
+        .verif-card::before {
+          content: ''; position: absolute; inset: 0;
+          background: linear-gradient(135deg, #16a34a 0%, #15803d 50%, #16a34a 100%);
+          opacity: var(--p, 0);
+          transition: opacity 0.25s ease-out;
+        }
+        .verif-card::after {
+          content: ''; position: absolute; inset: 0;
+          background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18) 0%, transparent 65%);
+          opacity: var(--p, 0);
+          pointer-events: none;
+          transition: opacity 0.25s ease-out;
+        }
         .verif-card > * { position: relative; z-index: 1; }
-        .verif-card[style*="--p:1"], .verif-card:hover { border-color: #16a34a !important; }
-        .verif-icon { transition: all 0.3s; }
-        .verif-title, .verif-desc { transition: color 0.3s; }
-        /* Mix color based on progress using CSS: use drop-shadow trick — simpler: just make text visible on green */
-        .verif-card:hover .verif-icon, .verif-card:hover .verif-title, .verif-card:hover .verif-desc { color: #fff; }
+        .verif-icon {
+          background: rgba(255,255,255, calc(0.05 + var(--p, 0) * 0.22)) !important;
+          border-color: rgba(255,255,255, calc(0.15 + var(--p, 0) * 0.35)) !important;
+          color: rgb(calc(220 + var(--p, 0) * 35), calc(20 + var(--p, 0) * 235), calc(20 + var(--p, 0) * 235)) !important;
+          transform: scale(calc(1 + var(--p, 0) * 0.12)) rotate(calc(var(--p, 0) * 6deg));
+          transition: all 0.25s ease-out;
+        }
+        .verif-title { color: #f0f0f0 !important; text-shadow: 0 0 calc(var(--p, 0) * 14px) rgba(255,255,255, calc(var(--p, 0) * 0.45)); transition: text-shadow 0.25s; }
+        .verif-desc { color: rgba(255,255,255, calc(0.55 + var(--p, 0) * 0.38)) !important; transition: color 0.25s; }
+        .verif-card:hover { transform: scale(1.02) translateY(-3px); box-shadow: 0 0 40px rgba(22,163,74,0.5), 0 10px 30px rgba(0,0,0,0.35); }
+        .verif-card:hover::before { opacity: 1; }
+        .verif-card:hover::after { opacity: 1; }
 
         /* MANIFEST */
         .manifest-section { position: relative; z-index: 10; padding: 3rem 1.25rem 4rem; }
