@@ -18,6 +18,7 @@ const Header = memo(({ cities = [] }) => {
   const [staedteOpen, setStaedteOpen] = useState(false);
   const [kontaktOpen, setKontaktOpen] = useState(false);
   const [mobileStaedte, setMobileStaedte] = useState(false);
+  const [mobileKontakt, setMobileKontakt] = useState(false);
   const navigate = useNavigate();
   const staedteRef = useRef(null);
   const kontaktRef = useRef(null);
@@ -147,12 +148,12 @@ const Header = memo(({ cities = [] }) => {
       {mobileOpen && (
         <div className="mob-menu" onClick={(e) => e.target === e.currentTarget && close()}>
           <div className="mob-menu-panel">
-            {/* Close */}
-            <div className="flex items-center justify-between px-5 pt-5 pb-3">
-              <div className="text-xl font-black" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                <span className="text-white/90">NRW</span><span style={{ color: '#dc1414' }}>TREFF</span>
+            {/* Menu header */}
+            <div className="mob-menu-header">
+              <div className="mob-menu-brand">
+                <span style={{ color: '#dc1414' }}>ROTLICHT</span>
               </div>
-              <button onClick={close} className="text-white/40 hover:text-white p-1"><X size={22} /></button>
+              <button onClick={close} className="text-white/50 hover:text-white p-1"><X size={22} /></button>
             </div>
 
             <div className="mob-menu-body">
@@ -166,8 +167,8 @@ const Header = memo(({ cities = [] }) => {
 
               {/* Städte */}
               <div className="mob-section-label mt-5">
-                <button onClick={() => setMobileStaedte(!mobileStaedte)} className="flex items-center gap-2 w-full">
-                  Städte <ChevronDown size={12} className={`transition-transform ${mobileStaedte ? 'rotate-180' : ''}`} />
+                <button onClick={() => setMobileStaedte(!mobileStaedte)} className="mob-section-toggle">
+                  Städte <ChevronDown size={14} className={`transition-transform ${mobileStaedte ? 'rotate-180' : ''}`} />
                 </button>
               </div>
               {mobileStaedte && NRW_CITIES.map(city => (
@@ -175,9 +176,15 @@ const Header = memo(({ cities = [] }) => {
               ))}
 
               {/* Kontakt */}
-              <div className="mob-section-label mt-5">Kontakt</div>
-              <Link to="/support" onClick={close} className="mob-link">Support <ChevronRight size={14} className="opacity-30" /></Link>
-              <Link to="/inserieren" onClick={close} className="mob-link mob-link-accent">Inserieren <ChevronRight size={14} className="opacity-30" /></Link>
+              <div className="mob-section-label mt-5">
+                <button onClick={() => setMobileKontakt(!mobileKontakt)} className="mob-section-toggle">
+                  Kontakt <ChevronDown size={14} className={`transition-transform ${mobileKontakt ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+              {mobileKontakt && (<>
+                <Link to="/support" onClick={close} className="mob-link">Support <ChevronRight size={14} className="opacity-30" /></Link>
+                <Link to="/inserieren" onClick={close} className="mob-link mob-link-accent">Inserieren <ChevronRight size={14} className="opacity-30" /></Link>
+              </>)}
             </div>
 
             <div className="mob-menu-footer">
@@ -207,11 +214,12 @@ const Header = memo(({ cities = [] }) => {
         .hdr-link:hover { color: #dc1414; }
 
         .hdr-brand { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; text-decoration: none; }
+        @media (max-width: 1023px) { .hdr-brand { top: 3px; } }
         .hdr-brand-name { font-family: Oswald, sans-serif; font-size: 26px; font-weight: 900; letter-spacing: 0.02em; line-height: 1; }
         @media (min-width: 640px) { .hdr-brand-name { font-size: 36px; } }
         .hdr-brand-red { color: #dc1414; transition: all 0.3s; }
-        .hdr-brand-sub { font-size: 10px; font-weight: 700; letter-spacing: 0.25em; margin-top: 2px; color: rgba(220,20,20,0.6); }
-        @media (min-width: 640px) { .hdr-brand-sub { font-size: 11px; } }
+        .hdr-brand-sub { font-size: 10px; font-weight: 700; letter-spacing: 0.25em; margin-top: 1px; color: rgba(220,20,20,0.6); }
+        @media (min-width: 640px) { .hdr-brand-sub { font-size: 11px; margin-top: 2px; } }
 
         .hdr-age { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 4px; color: rgba(220,20,20,0.6); border: 1px solid rgba(220,20,20,0.2); background: rgba(220,20,20,0.06); }
 
@@ -235,12 +243,15 @@ const Header = memo(({ cities = [] }) => {
         .mob-menu { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.7); }
         .mob-menu-panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(300px, 85vw); background: #0a0a0a; border-left: 1px solid rgba(220,20,20,0.08); display: flex; flex-direction: column; animation: slideIn 0.2s ease-out; }
         @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        .mob-menu-body { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; -webkit-overflow-scrolling: touch; }
+        .mob-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.25rem 1.1rem; border-bottom: 1px solid rgba(220,20,20,0.18); }
+        .mob-menu-brand { font-family: Oswald, sans-serif; font-size: 20px; font-weight: 900; letter-spacing: 0.08em; }
+        .mob-menu-body { flex: 1; overflow-y: auto; padding: 0.75rem 1rem 1rem; -webkit-overflow-scrolling: touch; }
         .mob-menu-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: center; }
-        .mob-section-label { padding: 8px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(220,20,20,0.4); }
-        .mob-link { display: flex; align-items: center; justify-content: space-between; padding: 12px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); border-radius: 6px; transition: all 0.15s; text-decoration: none; width: 100%; background: none; border: none; cursor: pointer; font-family: Inter, sans-serif; }
+        .mob-section-label { padding: 10px 12px 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(220,20,20,0.85); }
+        .mob-section-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; padding: 0; }
+        .mob-link { display: flex; align-items: center; justify-content: space-between; padding: 12px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(255,255,255,0.75); border-radius: 6px; transition: all 0.15s; text-decoration: none; width: 100%; background: none; border: none; cursor: pointer; font-family: Inter, sans-serif; }
         .mob-link:hover, .mob-link:active { color: #fff; background: rgba(255,255,255,0.04); }
-        .mob-link-accent { color: rgba(220,20,20,0.75); }
+        .mob-link-accent { color: rgba(220,20,20,0.9); }
       `}</style>
     </>
   );

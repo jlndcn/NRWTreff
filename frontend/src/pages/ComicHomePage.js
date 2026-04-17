@@ -233,7 +233,7 @@ export default function ComicHomePage() {
         .hero-section { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; background: #050505; }
         .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center 30%; will-change: transform; transform: scale(1.03); }
         .hero-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,5,5,0.1) 0%, transparent 20%, transparent 45%, rgba(5,5,5,0.4) 65%, rgba(5,5,5,0.85) 80%, #050505 100%); }
-        .hero-content { position: relative; z-index: 10; max-width: 48rem; margin: 0 auto; padding: 12rem 1.25rem 6rem; text-align: center; }
+        .hero-content { position: relative; z-index: 10; max-width: 48rem; margin: 0 auto; padding: 11.5rem 1.25rem 6rem; text-align: center; }
         @media (min-width: 640px) { .hero-content { padding: 16rem 2rem 10rem; } }
 
         .neon-headline { position: relative; margin-bottom: 1.5rem; line-height: 0.88; }
@@ -245,16 +245,16 @@ export default function ComicHomePage() {
           z-index: 0;
           pointer-events: none;
           /* Center on junction of "DU," (end of line 1) and "SÜSSER?" (line 2) */
-          top: 18%;
-          right: 2%;
-          width: 42%;
-          max-width: 220px;
+          top: 10%;
+          right: 4%;
+          width: 32%;
+          max-width: 170px;
           opacity: 0.7;
           transform: rotate(-12deg);
           filter: drop-shadow(0 0 24px rgba(220,20,20,0.55)) drop-shadow(0 0 48px rgba(220,20,20,0.25));
         }
-        @media (min-width: 640px) { .hero-lips { width: 30%; max-width: 320px; top: 12%; right: 8%; opacity: 0.6; } }
-        @media (min-width: 1024px) { .hero-lips { width: 24%; max-width: 340px; top: 10%; right: 5%; opacity: 0.55; } }
+        @media (min-width: 640px) { .hero-lips { width: 24%; max-width: 260px; top: 6%; right: 10%; opacity: 0.6; } }
+        @media (min-width: 1024px) { .hero-lips { width: 20%; max-width: 290px; top: 4%; right: 7%; opacity: 0.55; } }
 
         .neon-line-1 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.2rem, 10vw, 5.5rem); color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1); letter-spacing: 0.04em; margin-bottom: 0.08em; }
         .neon-line-2 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); animation: neon-flicker 5s ease-in-out infinite; }
