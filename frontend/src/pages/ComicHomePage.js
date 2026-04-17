@@ -179,6 +179,7 @@ export default function ComicHomePage() {
         <div className="hero-fade" />
         <div className="hero-content">
           <h1 data-testid="hero-headline" className="neon-headline">
+            <img src={`${B}/api/uploads/lips-kiss.png`} alt="" className="hero-lips" aria-hidden="true" />
             <span className="neon-line-1">WO BIST DU,</span>
             <span className="neon-line-2">SÜSSER?</span>
           </h1>
@@ -235,10 +236,28 @@ export default function ComicHomePage() {
         .hero-content { position: relative; z-index: 10; max-width: 48rem; margin: 0 auto; padding: 12rem 1.25rem 6rem; text-align: center; }
         @media (min-width: 640px) { .hero-content { padding: 16rem 2rem 10rem; } }
 
-        .neon-headline { margin-bottom: 1.5rem; line-height: 0.88; }
+        .neon-headline { position: relative; margin-bottom: 1.5rem; line-height: 0.88; }
         @media (min-width: 640px) { .neon-headline { margin-bottom: 2.5rem; line-height: 0.92; } }
-        .neon-line-1 { display: block; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.2rem, 10vw, 5.5rem); color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1); letter-spacing: 0.04em; margin-bottom: 0.08em; }
-        .neon-line-2 { display: block; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); animation: neon-flicker 5s ease-in-out infinite; }
+
+        /* Lips kiss layer — positioned at the "DU SÜSSER" corner, behind the text */
+        .hero-lips {
+          position: absolute;
+          z-index: 0;
+          pointer-events: none;
+          /* Center on junction of "DU," (end of line 1) and "SÜSSER?" (line 2) */
+          top: 18%;
+          right: 2%;
+          width: 42%;
+          max-width: 220px;
+          opacity: 0.7;
+          transform: rotate(-12deg);
+          filter: drop-shadow(0 0 24px rgba(220,20,20,0.55)) drop-shadow(0 0 48px rgba(220,20,20,0.25));
+        }
+        @media (min-width: 640px) { .hero-lips { width: 30%; max-width: 320px; top: 12%; right: 8%; opacity: 0.6; } }
+        @media (min-width: 1024px) { .hero-lips { width: 24%; max-width: 340px; top: 10%; right: 5%; opacity: 0.55; } }
+
+        .neon-line-1 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.2rem, 10vw, 5.5rem); color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1); letter-spacing: 0.04em; margin-bottom: 0.08em; }
+        .neon-line-2 { display: block; position: relative; z-index: 2; font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(2.8rem, 13vw, 7.5rem); color: #dc1414; letter-spacing: 0.02em; text-shadow: 0 0 8px rgba(220,20,20,0.4), 0 0 25px rgba(220,20,20,0.25), 0 0 50px rgba(220,20,20,0.12); animation: neon-flicker 5s ease-in-out infinite; }
         @keyframes neon-flicker { 0%,100% { opacity:1; } 93% { opacity:1; } 94% { opacity:0.82; } 95% { opacity:1; } 97% { opacity:0.9; } 98% { opacity:1; } }
 
         .hero-search-wrap { max-width: 32rem; margin: 0 auto; }
